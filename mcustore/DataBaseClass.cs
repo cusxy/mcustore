@@ -7,24 +7,21 @@ namespace mcustore
 {
     /// <summary>Класс для работы с БД</summary>
     public class DataBaseClass
-    {
-        const string DEFAULT_CONNECTION_STRING = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\Database.mdf;Integrated Security=True";
-        
+    {        
         /// <summary>Строчка подключения к БД</summary>
         private string m_connection_string;
 
         /// <summary>Создаёт объект по работе с БД</summary>
         /// <param name="connection_string">Строчка подключения к БД</param>
-        public DataBaseClass(string connection_string = DEFAULT_CONNECTION_STRING)
+        public DataBaseClass()
         {
-            m_connection_string = connection_string; // сохраняем строчку подключения к БД
+            m_connection_string = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\mcustoredatabase.mdf;Integrated Security=True"; // сохраняем строчку подключения к БД
         }
 
         /// <summary>Проверяет подключение к БД</summary>
         /// <param name="connection_string">Строчка подключения к БД</param>
-        public bool Connect(string connection_string = DEFAULT_CONNECTION_STRING)
+        public bool Connect()
         {
-            m_connection_string = connection_string; // сохраняем строчку подключения к БД
             SqlConnection sqlConnection = new SqlConnection(m_connection_string); // инициализируем соединение с БД
             try
             {
