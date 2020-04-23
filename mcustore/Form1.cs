@@ -62,7 +62,7 @@ namespace mcustore
             }
             else // если введённый пароль - неверный
             {
-                //textBox_password.Clear(); // очищаем поле для ввода пароля
+                password_tb.Clear(); // очищаем поле для ввода пароля
                 MessageBox.Show("Неверный пароль или логин!", "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error); // показываем сообщение об ошибке
             }
         }
