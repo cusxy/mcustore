@@ -1,5 +1,5 @@
 # mcustore
 ## EN
-This is a test repository, please ignore it.
+A C# / Windows Forms application for working with a SQL Server database.
 ## RU
-Это тестовый репозиторий, пожалуйста, не обращайте на него внимания.
+Приложение C# / Windows Forms для работы с базой данных SQL Server.
