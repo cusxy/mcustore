@@ -19,12 +19,13 @@ namespace mcustore
 
         private void Work_Window_Load(object sender, EventArgs e)
         {
-            dataGridView1.ColumnCount = 5;
+            dataGridView1.ColumnCount = 6;
             dataGridView1.Columns[0].Name = "Номер заказа";
             dataGridView1.Columns[1].Name = "Компания";
             dataGridView1.Columns[2].Name = "Модели микроконтроллеров";
             dataGridView1.Columns[3].Name = "Количество (шт.)";
-            dataGridView1.Columns[4].Name = "Дата";
+            dataGridView1.Columns[4].Name = "Цена";
+            dataGridView1.Columns[5].Name = "Дата";
 
             dataGridView2.ColumnCount = 3;
             dataGridView2.Columns[0].Name = "Модель микроконтроллера";
