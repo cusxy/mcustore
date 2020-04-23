@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace mcustore
 {
-    class DataBaseClass
+    public class DataBaseClass
     {
+        public DataBaseClass(string connection_string)
+        {
+        }
     }
 }
