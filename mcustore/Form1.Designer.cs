@@ -38,7 +38,7 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(327, 211);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(147, 29);
+            this.label1.Size = new System.Drawing.Size(150, 29);
             this.label1.TabIndex = 0;
             this.label1.Text = "Pull Request";
             // 
@@ -47,7 +47,7 @@
             this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.button1.ForeColor = System.Drawing.Color.White;
-            this.button1.Location = new System.Drawing.Point(330, 152);
+            this.button1.Location = new System.Drawing.Point(443, 112);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(144, 56);
             this.button1.TabIndex = 1;
@@ -75,7 +75,7 @@
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label1);
-            this.Font = new System.Drawing.Font("Roboto", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.ForeColor = System.Drawing.Color.White;
             this.Name = "Form1";
             this.Text = "Form1";
