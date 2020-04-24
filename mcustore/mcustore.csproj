@@ -128,10 +128,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="mcustoredatabase.mdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="mcustoredatabase_log.ldf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <DependentUpon>mcustoredatabase.mdf</DependentUpon>
     </Content>
     <None Include="Resources\fon_vxod.jpg" />
