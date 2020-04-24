@@ -215,5 +215,36 @@ namespace mcustore
             string sql2 = "DELETE FROM Microcontrollers WHERE Microcontroller_name = N'" + name + "';";
             return GoQuery(sql2);
         }
+
+        /// <summary>Создаём новый заказ</summary>
+        /// <param name="company_name">Название компании</param>
+        /// <param name="microcontrollers_names">Одномерный список названий заказываемых микроконтроллеров</param>
+        /// <param name="microcontrollers_quantities">Одномерный список соответствующего количества заказываемых микроконтроллеров</param>
+        /// <returns>1 - в случае успешного создания, 0 - в случае, если запрос не удалось выполнить, -1 - в случае ошибки</returns>
+        public int CreateNewOrder(string company_name, List<string> microcontrollers_names, List<int> microcontrollers_quantities)
+        {
+            string sql = "INSERT INTO Orders (Company_name, Datetime) VALUES (N'" + company_name + "', CONVERT (date, GETDATE()));";
+            int result = GoQuery(sql);
+            if (result != 1) return result;
+
+            string sql2 = "SELECT Order_id FROM Orders WHERE Company_name = N'" + company_name + "';";
+            List<List<string>> info = ReadDataToMass(sql2);
+            int order_id = Convert.ToInt32(info[0][0]);
+
+            for (int i = 0; i < microcontrollers_names.Count; i++) {
+                string sql3 = "SELECT Microcontroller_id FROM Microcontrollers WHERE Microcontroller_name = N'" + microcontrollers_names[i] + "';";
+                List<List<string>> info_mc_id = ReadDataToMass(sql3);
+                if (info == null) return -1; // в случае ошибки
+                if (info.Count == 0) return 0; // в случае отсутствия такого микроконтроллера
+
+                int microcontroller_id = Convert.ToInt32(info_mc_id[0][0]);
+
+                string sql4 = "INSERT INTO order_microcontroller (Order_id, Microcontroller_id, Quantity) VALUES (" + order_id + ", " + microcontroller_id + ", " + microcontrollers_quantities[i] + ");";
+                result = GoQuery(sql4);
+                if (result != 1) return result;
+            }
+
+            return 1;
+        }
     }
 }
