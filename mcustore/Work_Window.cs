@@ -266,7 +266,6 @@ namespace mcustore
         private void Button2_Click(object sender, EventArgs e)
         {
             DataBaseClass.CreateNewOrder(textBox1.Text, mass.ToList(), array.ToList());
-            Work_Window_Load(sender, e);
         }
     }
 }
