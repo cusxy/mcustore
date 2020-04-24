@@ -95,7 +95,7 @@ namespace mcustore
                 List<List<string>> microcontroller_info_list = ReadDataToMass(sql2);
                 for (int i2 = 0; i2 < microcontroller_info_list.Count; i2++) {
                     if (i2 != 0) {
-                        microcontrollers_info += ", ";
+                        microcontrollers_info += "\n";
                     }
                     microcontrollers_info += microcontroller_info_list[i2][0] + " (" + microcontroller_info_list[i2][1] + " шт.)";
                     double price = Convert.ToDouble(microcontroller_info_list[i2][2]) * Convert.ToInt32(microcontroller_info_list[i2][1]); // количество микроконтроллеров умножаем на цену
