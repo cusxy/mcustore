@@ -85,7 +85,7 @@ namespace mcustore
 
             for (int i = 0; i < orders_list.Count; i++) // для каждого заказа
             {
-                result[i] = new List<string>();
+                result.Add(new List<string>()); 
                 result[i].Add(orders_list[i][0]); // id заказа 
                 result[i].Add(orders_list[i][1]); // название компании
                 string microcontrollers_info = "";
