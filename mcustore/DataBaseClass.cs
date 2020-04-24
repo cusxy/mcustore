@@ -215,7 +215,7 @@ namespace mcustore
         /// <returns>1 - в случае успешного создания, 0 - в случае, если запрос не удалось выполнить, -1 - в случае ошибки</returns>
         public static int CreateNewOrder(string company_name, List<string> microcontrollers_names, List<int> microcontrollers_quantities)
         {
-            string sql = "EXECUTE AddNewOrder '2015-05-19 10:11:12', N'" + company_name + "';";
+            string sql = "EXECUTE AddNewOrder '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "', N'" + company_name + "';";
             int result = GoQuery(sql);
             if (result != 1) return result;
 
