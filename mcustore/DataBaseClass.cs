@@ -158,9 +158,10 @@ namespace mcustore
         /// <param name="quantity">Количество на складе</param>
         /// <param name="price">Цена</param>
         /// <returns>1 - в случае успешного запроса, 0 - в случае, если запрос не удалось выполнить, -1 - в случае ошибки</returns>
-        public static int CreateNewMicrocontroller(string name, int quantity, int price)
+        public static int CreateNewMicrocontroller(string name, int quantity, double price)
         {
-            string sql = "INSERT INTO Microcontrollers (Microcontroller_name, Quantity, Price) VALUES (N'" + name + "', " + quantity + ", " + price + ")";
+            //string sql = "INSERT INTO Microcontrollers (Microcontroller_name, Quantity, Price) VALUES (N'" + name + "', " + quantity + ", " + price + ")";
+            string sql = "EXECUTE AddMicrocontroller '" + name + "', " + quantity + ", " + price + "";
             return GoQuery(sql);
         }
 

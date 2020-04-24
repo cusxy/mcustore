@@ -16,6 +16,7 @@ namespace mcustore
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            DataBaseClass.CreateNewMicrocontroller("ИМЯ", 123, 456.50);
             Application.Run(new Work_Window());
         }
     }
