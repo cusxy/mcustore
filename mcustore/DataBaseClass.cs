@@ -78,13 +78,14 @@ namespace mcustore
         /// <summary>Выбирает данные из таблицы Orders о заказах, созданных с первой по вторую указанные даты (включительно)</summary>
         /// <param name="date_from">Дата "от" (включительно)</param>
         /// <param name="date_to">Дата "до" (включительно)</param>
-        /// <returns>Двумерный список данных для таблицы в порядке: ID заказа - Название компании - Микроконтроллеры - Общая цена - Дата заказа</returns>
+        /// <returns>Двумерный список данных для таблицы в порядке: ID заказа - Название компании - Микроконтроллеры - Общая цена - Дата заказа. Возвращает null в случае возникновения ошибки.</returns>
         public List<List<string>> SelectOrdersData(string date_from = "2000-12-31", string date_to = "2100-12-31")
         {
             // ID заказа - Название компании - Микроконтроллеры - Общая цена - Дата заказа
 
             string sql = "SELECT Order_id, Company_name, Datetime FROM Orders WHERE (Datetime >= '" + date_from + "') AND (Datetime <= '" + date_to + "');";
             List<List<string>> orders_list = ReadDataToMass(sql);
+            if (orders_list == null) return null; // в случае ошибки
 
             List<List<string>> result = new List<List<string>>();
             int all_price = 0;
@@ -115,7 +116,7 @@ namespace mcustore
 
         /// <summary>Выбирает данные из таблицы Microcontrollers о микроконтроллерах с названием, содержащим передаваемую строчку</summary>
         /// <param name="name_contains">Строчка, которую должен содержать микроконтроллер</param>
-        /// <returns>Двумерный список данных для таблицы в порядке: Название микроконтроллера - Количество - Цена за штуку
+        /// <returns>Двумерный список данных для таблицы в порядке: Название микроконтроллера - Количество - Цена за штуку. Возвращает null в случае возникновения ошибки.
         public List<List<string>> SelectMicrocontrollersData(string name_contains = "")
         {
             // Название микроконтроллера - Количество - Цена за штуку
@@ -157,5 +158,32 @@ namespace mcustore
             }
         }
 
+        /// <summary>Создаём новый микроконтроллер</summary>
+        /// <param name="name">Название микроконтроллера</param>
+        /// <param name="quantity">Количество на складе</param>
+        /// <param name="price">Цена</param>
+        /// <returns>1 - в случае успешного запроса, 0 - в случае, если запрос не удалось выполнить, -1 - в случае ошибки</returns>
+        public int CreateNewMicrocontroller(string name, int quantity, int price)
+        {
+            string sql = "INSERT INTO Microcontrollers (Microcontroller_name, Quantity, Price) VALUES (N'" + name + "', " + quantity + ", " + price + ")";
+            return GoQuery(sql);
+        }
+
+        /// <summary>Добавляет указанное количество выбранного микроконтроллера на склад</summary>
+        /// <param name="name">Название микроконтроллера (должно быть в БД)</param>
+        /// <param name="plus">Количество, которое прибавить</param>
+        /// <returns>1 - в случае успешного запроса, 0 - в случае, если запрос не удалось выполнить, -1 - в случае ошибки</returns>
+        public int PlusQuantity(string name, int plus)
+        {
+            string sql = "SELECT Quantity FROM Microcontrollers WHERE Microcontroller_name = N'" + name + "';";
+            List<List<string>> info = ReadDataToMass(sql);
+            if (info == null) return -1; // в случае ошибки
+
+            int total_quantity = Convert.ToInt32(info[0][0]);
+            total_quantity += plus;
+
+            string sql2 = "UPDATE Microcontrollers SET Quantity = " + total_quantity + ";";
+            return GoQuery(sql2);
+        }
     }
 }
