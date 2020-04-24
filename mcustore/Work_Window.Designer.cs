@@ -44,7 +44,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.mcustoredatabaseDataSet = new mcustore.mcustoredatabaseDataSet();
             this.mcustoredatabaseDataSetBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.label5 = new System.Windows.Forms.Label();
             this.tabPage2.SuspendLayout();
@@ -54,8 +53,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.tabControl1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.mcustoredatabaseDataSet)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.mcustoredatabaseDataSetBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // tabPage2
@@ -238,16 +235,6 @@
             this.tabControl1.Size = new System.Drawing.Size(1399, 713);
             this.tabControl1.TabIndex = 0;
             // 
-            // mcustoredatabaseDataSet
-            // 
-            this.mcustoredatabaseDataSet.DataSetName = "mcustoredatabaseDataSet";
-            this.mcustoredatabaseDataSet.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
-            // 
-            // mcustoredatabaseDataSetBindingSource
-            // 
-            this.mcustoredatabaseDataSetBindingSource.DataSource = this.mcustoredatabaseDataSet;
-            this.mcustoredatabaseDataSetBindingSource.Position = 0;
-            // 
             // label5
             // 
             this.label5.AutoSize = true;
@@ -278,8 +265,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.tabControl1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.mcustoredatabaseDataSet)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.mcustoredatabaseDataSetBindingSource)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -290,7 +275,6 @@
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.TabControl tabControl1;
-        private mcustoredatabaseDataSet mcustoredatabaseDataSet;
         private System.Windows.Forms.BindingSource mcustoredatabaseDataSetBindingSource;
         private System.Windows.Forms.DataGridView dataGridView2;
         private System.Windows.Forms.GroupBox groupBox1;

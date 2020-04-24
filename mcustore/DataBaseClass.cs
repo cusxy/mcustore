@@ -133,18 +133,18 @@ namespace mcustore
 
                 SqlCommand sqlCommand = new SqlCommand(query, sqlConnection); // создание SQL команды с указанным запросом
                 SqlDataReader reader = sqlCommand.ExecuteReader(); // выполнение SQL команды
-                if (reader.HasRows)
-                {
+                /*if (reader.HasRows)
+                {*/
                     reader.Close();
                     sqlConnection.Close(); // закрываем соединение с БД
                     return 1;
-                }
-                else
+               /* }*/
+                /*else
                 {
                     reader.Close();
                     sqlConnection.Close(); // закрываем соединение с БД
                     return 0;
-                }
+                }*/
             }
             catch
             {
@@ -159,9 +159,8 @@ namespace mcustore
         /// <param name="price">Цена</param>
         /// <returns>1 - в случае успешного запроса, 0 - в случае, если запрос не удалось выполнить, -1 - в случае ошибки</returns>
         public static int CreateNewMicrocontroller(string name, int quantity, double price)
-        {
-            //string sql = "INSERT INTO Microcontrollers (Microcontroller_name, Quantity, Price) VALUES (N'" + name + "', " + quantity + ", " + price + ")";
-            string sql = "EXECUTE AddMicrocontroller '" + name + "', " + quantity + ", " + price + "";
+        {   
+            string sql = "EXECUTE AddMicrocontroller N'" + name + "', "+ quantity + ", " + price.ToString(System.Globalization.CultureInfo.InvariantCulture) + ";";
             return GoQuery(sql);
         }
 
