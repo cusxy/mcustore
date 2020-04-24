@@ -201,5 +201,19 @@ namespace mcustore
             string sql2 = "UPDATE Microcontrollers SET Microcontroller_name = N'" + new_name + "', Quantity = " + new_quantity + ", Price = " + new_price + ";";
             return GoQuery(sql2);
         }
+
+        /// <summary>Удаляет микроконтроллер</summary>
+        /// <param name="name">Название микроконтроллера</param>
+        /// <returns>1 - в случае успешного удаления, 0 - в случае, если запрос не удалось выполнить (микроконтроллер не найден или др. причина), -1 - в случае ошибки</returns>
+        public int DeleteMicrocontroller(string name)
+        {
+            string sql = "SELECT * FROM Microcontrollers WHERE Microcontroller_name = N'" + name + "';";
+            List<List<string>> info = ReadDataToMass(sql);
+            if (info == null) return -1; // в случае ошибки
+            if (info.Count == 0) return 0; // в случае отсутствия такого микроконтроллера
+
+            string sql2 = "DELETE FROM Microcontrollers WHERE Microcontroller_name = N'" + name + "';";
+            return GoQuery(sql2);
+        }
     }
 }
