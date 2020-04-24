@@ -55,10 +55,12 @@ namespace mcustore
                     dataGridView2.Rows.Add();
                     for (int j = 0; j < dataOrder2[i].Count; j++)
                     {
-                        dataGridView2.Rows[i].Cells[j].Value = dataOrder2[i][j];
+                         dataGridView2.Rows[i].Cells[j].Value = dataOrder2[i][j];
+                         
                     }
                 }
                 checkListBox();
+                dataGridFunction();
             }
             else
             {
@@ -86,113 +88,49 @@ namespace mcustore
                  checkedListBox1.Items.Add(dataOrder2[i][0],false);
             }
         }
-        //private int[] ItemCheck1()
-        //{
-        //    int i = 0;
-        //    foreach (int indexChecked in checkedListBox1.CheckedIndices)
-        //    {
-        //        i++;
-        //    }
-        //    int[] mass = new int[i];
-        //    i = 0;
-        //    foreach (object itemChecked in checkedListBox1.CheckedItems)
-        //    {
-        //        mass[i] = Convert.ToInt32(itemChecked);
-        //        i++;
-        //    }
-        //    return mass;
-        //}
-        int[] array;
-        string[] mass;
-        private string[] ItemCheck2()
+        List<List<string>> dataGrid3;
+        private void dataGridFunction()
         {
-            if(mass==null && array==null)
+            dataGrid3 = new List<List<string>>();
+            for (int i=0;i< dataOrder2.Count; i++)
             {
-                int i = 0;
-                foreach (int indexChecked in checkedListBox1.CheckedIndices)
-                {
-                    i++;
-                }
-                mass = new string[i];
-                array = new int[i];
-                i = 0;
-                foreach (object itemChecked in checkedListBox1.CheckedItems)
-                {
-                    array[i] = 0;
-                    mass[i] = itemChecked.ToString();
-                    i++;
-                }
+                dataGrid3.Add(new List<string>());
+                dataGrid3[i].Add("false");
+                dataGrid3[i].Add(dataOrder2[i][0]);
+                dataGrid3[i].Add("0");
             }
-            else
-            {
-                int i = 0;
-                foreach (int indexChecked in checkedListBox1.CheckedIndices)
+        }
+        private void ItemCheck2()
+        {
+           for(int i=0;i<checkedListBox1.Items.Count;i++)
+           {
+                if(checkedListBox1.GetItemChecked(i) && dataGrid3[i][1]==checkedListBox1.GetItemText(checkedListBox1.Items[i]))
                 {
-                    i++;
-                }
-                string[] mas = mass;
-                int[] arr = array;
-                mass = new string[i];
-                array = new int[i];
-                i = 0;
-                foreach (object itemChecked in checkedListBox1.CheckedItems)
-                {
-                    array[i] = 0;
-                    mass[i] = itemChecked.ToString();
-                    i++;
-                }
-                if (array.Count() > arr.Count())
-                {
-                    for(int i1=0;i1< array.Count();i1++)
-                    {
-                        try
-                        {
-                            array[i1] = arr[i1];
-                        }
-                        catch
-                        {
-                            array[i1] = 0;
-                        }
-                    }
+                    dataGrid3[i][0] = "true";
                 }
                 else
                 {
-                    for (int i1 = 0; i1 < mass.Count(); i1++)
-                    {
-                        try
-                        {
-                            if (mass[i1]!=mas[i1])
-                            {
-                               if(i1!=mas.Count()&& arr[i1]!=0)
-                                {
-                                    array[i1] = arr[i1 + 1];
-                                }
-                            }
-                            else
-                            {
-                                array[i1] = arr[i1];
-                            }
-                        }
-                        catch
-                        {
-                            array[i1] = 0;
-                        }
-                    }
+                    dataGrid3[i][0] = "false";
+                    dataGrid3[i][1] = dataOrder2[i][0];
+                    dataGrid3[i][2]="0";
                 }
             }
-            return mass;
         }
-
+        
         private void CheckedListBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            ItemCheck2();
             dataGridView3.Rows.Clear();
-            mass = ItemCheck2();
-            for (int i = 0; i < mass.Count(); i++)
+            int j = 0;
+            for (int i = 0; i < dataGrid3.Count; i++)
             {
-                dataGridView3.Rows.Add();
-                dataGridView3.Rows[i].Cells[0].Value = mass[i];
-                dataGridView3.Rows[i].Cells[1].Value = array[i];
+                if(dataGrid3[i][0]=="true")
+                {
+                    dataGridView3.Rows.Add();
+                    dataGridView3.Rows[j].Cells[0].Value = dataGrid3[i][1];
+                    dataGridView3.Rows[j].Cells[1].Value = dataGrid3[i][2];
+                    j++;
+                }
             }
             price();
         }
@@ -207,20 +145,33 @@ namespace mcustore
         }
         private void DataGridView3_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-            if(e.ColumnIndex == 0)
+            if (e.ColumnIndex == 0)
             {
-                dataGridView3.Rows[e.RowIndex].Cells[0].Value = mass[e.RowIndex];
+                int j = 0;
+                for (int i = 0; i < dataOrder2.Count; i++)
+                {
+                    if(dataGrid3[i][0]=="true")
+                    {
+                        if(j==e.RowIndex)
+                        {
+                            dataGridView3.Rows[e.RowIndex].Cells[0].Value = dataGrid3[i][1];
+                        }
+                        j++;
+                    }
+                }
             }
-            if(e.ColumnIndex==1)
+            if (e.ColumnIndex == 1)
             {
+                int temp = 0;
                 try
                 {
-                    array[e.RowIndex] = Convert.ToInt32(dataGridView3.Rows[e.RowIndex].Cells[1].Value);
+                    temp = Convert.ToInt32(dataGridView3.Rows[e.RowIndex].Cells[1].Value);
+                    dataGrid3[e.RowIndex][2] = dataGridView3.Rows[e.RowIndex].Cells[1].Value.ToString();
                     for (int i = 0; i < dataOrder2.Count; i++)
                     {
                         if (dataGridView3.Rows[e.RowIndex].Cells[0].Value == dataOrder2[i][0])
                         {
-                            dataGridView3.Rows[e.RowIndex].Cells[2].Value = array[e.RowIndex] * Convert.ToDouble(dataOrder2[i][2]);
+                            dataGridView3.Rows[e.RowIndex].Cells[2].Value = Convert.ToInt32(dataGrid3[e.RowIndex][2]) * Convert.ToDouble(dataOrder2[i][2]);
                             break;
                         }
                     }
@@ -228,15 +179,23 @@ namespace mcustore
                 catch
                 {
                     MessageBox.Show("Буквы нельзя вводить!");
-                    dataGridView3.Rows[e.RowIndex].Cells[1].Value = array[e.RowIndex];
+                    dataGridView3.Rows[e.RowIndex].Cells[1].Value = temp;
                 }
                 price();
             }
-            if(e.ColumnIndex == 2)
+            if (e.ColumnIndex == 2)
             {
                 try
                 {
                     Convert.ToInt32(dataGridView3.Rows[e.RowIndex].Cells[2].Value);
+                    for (int i = 0; i < dataOrder2.Count; i++)
+                    {
+                        if (dataGridView3.Rows[e.RowIndex].Cells[0].Value == dataOrder2[i][0])
+                        {
+                            dataGridView3.Rows[e.RowIndex].Cells[2].Value = Convert.ToInt32(dataGrid3[i][2]) * Convert.ToDouble(dataOrder2[i][2]);
+                            break;
+                        }
+                    }
                 }
                 catch
                 {
@@ -244,7 +203,7 @@ namespace mcustore
                     {
                         if (dataGridView3.Rows[e.RowIndex].Cells[0].Value == dataOrder2[i][0])
                         {
-                            dataGridView3.Rows[e.RowIndex].Cells[2].Value = array[e.RowIndex] * Convert.ToDouble(dataOrder2[i][2]);
+                            dataGridView3.Rows[e.RowIndex].Cells[2].Value = Convert.ToInt32(dataGrid3[i][2]) * Convert.ToDouble(dataOrder2[i][2]);
                             break;
                         }
                     }
@@ -261,10 +220,22 @@ namespace mcustore
             }
             dataGridView3.Rows.Clear();
             label3.Text = "";
+            dataGrid3.Clear();
+            dataGridFunction();
         }
 
         private void Button2_Click(object sender, EventArgs e)
         {
+            string[] mass = new string[dataGrid3.Count];
+            int[] array = new int[dataGrid3.Count];
+            for(int i=0;i< dataGrid3.Count;i++)
+            {
+                if(dataGrid3[i][0]=="true")
+                {
+                    mass[i] = dataGrid3[i][1];
+                    array[i] = Convert.ToInt32(dataGrid3[i][2]);
+                }
+            }
             DataBaseClass.CreateNewOrder(textBox1.Text, mass.ToList(), array.ToList());
         }
     }

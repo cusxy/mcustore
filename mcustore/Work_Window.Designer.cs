@@ -37,6 +37,9 @@
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.dataGridView3 = new System.Windows.Forms.DataGridView();
             this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -46,9 +49,6 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.mcustoredatabaseDataSet = new mcustore.mcustoredatabaseDataSet();
             this.mcustoredatabaseDataSetBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.label3 = new System.Windows.Forms.Label();
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             this.tabPage1.SuspendLayout();
@@ -137,6 +137,34 @@
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Добавление заказа";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(6, 289);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(0, 20);
+            this.label3.TabIndex = 7;
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(413, 326);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(246, 45);
+            this.button2.TabIndex = 6;
+            this.button2.Text = "Добавить";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.Button2_Click);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(10, 326);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(246, 45);
+            this.button1.TabIndex = 5;
+            this.button1.Text = "Отменить заказ";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.Button1_Click);
             // 
             // dataGridView3
             // 
@@ -258,35 +286,6 @@
             // 
             this.mcustoredatabaseDataSetBindingSource.DataSource = this.mcustoredatabaseDataSet;
             this.mcustoredatabaseDataSetBindingSource.Position = 0;
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(10, 326);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(246, 45);
-            this.button1.TabIndex = 5;
-            this.button1.Text = "Отменить заказ";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.Button1_Click);
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(413, 326);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(246, 45);
-            this.button2.TabIndex = 6;
-            this.button2.Text = "Добавить";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.Button2_Click);
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 289);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(53, 20);
-            this.label3.TabIndex = 7;
-            this.label3.Text = "label3";
             // 
             // Work_Window
             // 
