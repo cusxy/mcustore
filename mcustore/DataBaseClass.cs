@@ -229,13 +229,15 @@ namespace mcustore
 
             string sql2 = "SELECT Order_id FROM Orders WHERE Company_name = N'" + company_name + "';";
             List<List<string>> info = ReadDataToMass(sql2);
+            if (info == null) return -1; // в случае ошибки
+            if (info.Count == 0) return 0; // в случае отсутствия такого микроконтроллера
             int order_id = Convert.ToInt32(info[0][0]);
 
             for (int i = 0; i < microcontrollers_names.Count; i++) {
                 string sql3 = "SELECT Microcontroller_id FROM Microcontrollers WHERE Microcontroller_name = N'" + microcontrollers_names[i] + "';";
                 List<List<string>> info_mc_id = ReadDataToMass(sql3);
-                if (info == null) return -1; // в случае ошибки
-                if (info.Count == 0) return 0; // в случае отсутствия такого микроконтроллера
+                if (info_mc_id == null) return -1; // в случае ошибки
+                if (info_mc_id.Count == 0) return 0; // в случае отсутствия такого микроконтроллера
 
                 int microcontroller_id = Convert.ToInt32(info_mc_id[0][0]);
 
@@ -245,6 +247,21 @@ namespace mcustore
             }
 
             return 1;
+        }
+
+        /// <summary>Возвращает одномерный список, содержащий названия всех созданных микроконтроллеров в таблице Microcontrollers</summary>
+        /// <returns>Одномерный список</returns>
+        public List<string> GetAllMicrocontrollersNames() {
+            string sql = "SELECT Microcontroller_name FROM Microcontrollers";
+            List<List<string>> info = ReadDataToMass(sql);
+            if (info == null) return null; // в случае ошибки
+
+            List<string> result = new List<string>();
+            for (int i = 0; i < info.Count; i++) {
+                result.Add(info[i][0]);
+            }
+
+            return result;
         }
     }
 }
