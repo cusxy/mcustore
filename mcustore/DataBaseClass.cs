@@ -103,6 +103,7 @@ namespace mcustore
                 }
                 result[i].Add(microcontrollers_info); // информация о микроконтроллерах и их количестве
                 result[i].Add(all_price.ToString()); // общая стоимость
+                result[i].Add(orders_list[i][2]); // название компании
             }
 
             return result;
