@@ -6,21 +6,14 @@ using System.Windows.Forms;
 namespace mcustore
 {
     /// <summary>Класс для работы с БД</summary>
-    public class DataBaseClass
+    abstract public class DataBaseClass
     {        
         /// <summary>Строчка подключения к БД</summary>
-        private string m_connection_string;
-
-        /// <summary>Создаёт объект по работе с БД</summary>
-        /// <param name="connection_string">Строчка подключения к БД</param>
-        public DataBaseClass()
-        {
-            m_connection_string = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\mcustoredatabase.mdf;Integrated Security=True"; // сохраняем строчку подключения к БД
-        }
+        private static readonly string m_connection_string = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\mcustoredatabase.mdf;Integrated Security=True";
 
         /// <summary>Проверяет подключение к БД</summary>
         /// <param name="connection_string">Строчка подключения к БД</param>
-        public bool IsConnect()
+        public static bool IsConnect()
         {
             SqlConnection sqlConnection = new SqlConnection(m_connection_string); // инициализируем соединение с БД
             try
@@ -39,7 +32,7 @@ namespace mcustore
         /// <summary>Отправляет указанный запрос к БД и заносит полученные данные в указанную таблицу</summary>
         /// <param name="query">Строчка с запросом</param>
         /// <param name="dataGridView">Двумерный массив, строчки которого содержат соответствующие данные таблицы, к которой выполнен запрос (возвращает null в случае возникновения ошибки)</param>
-        private List<List<string>> ReadDataToMass(string query)
+        private static List<List<string>> ReadDataToMass(string query)
         {
             List<List<string>> mass = new List<List<string>>();
             SqlConnection sqlConnection = new SqlConnection(m_connection_string); // инициализируем соединение с БД
@@ -79,7 +72,7 @@ namespace mcustore
         /// <param name="date_from">Дата "от" (включительно)</param>
         /// <param name="date_to">Дата "до" (включительно)</param>
         /// <returns>Двумерный список данных для таблицы в порядке: ID заказа - Название компании - Микроконтроллеры - Общая цена - Дата заказа. Возвращает null в случае возникновения ошибки.</returns>
-        public List<List<string>> SelectOrdersData(string date_from = "2000-12-31", string date_to = "2100-12-31")
+        public static List<List<string>> SelectOrdersData(string date_from = "2000-12-31", string date_to = "2100-12-31")
         {
             // ID заказа - Название компании - Микроконтроллеры - Общая цена - Дата заказа
 
@@ -117,7 +110,7 @@ namespace mcustore
         /// <summary>Выбирает данные из таблицы Microcontrollers о микроконтроллерах с названием, содержащим передаваемую строчку</summary>
         /// <param name="name_contains">Строчка, которую должен содержать микроконтроллер</param>
         /// <returns>Двумерный список данных для таблицы в порядке: Название микроконтроллера - Количество - Цена за штуку. Возвращает null в случае возникновения ошибки.
-        public List<List<string>> SelectMicrocontrollersData(string name_contains = "")
+        public static List<List<string>> SelectMicrocontrollersData(string name_contains = "")
         {
             // Название микроконтроллера - Количество - Цена за штуку
 
@@ -129,7 +122,7 @@ namespace mcustore
         /// <summary>Выполняет запрос без возврата значения и без изменения чего-либо на форме</summary>
         /// <param name="query">Запрос</param>
         /// <returns>1 - в случае успешного запроса, 0 - в случае, если запрос не удалось выполнить, -1 - в случае ошибки</returns>
-        private int GoQuery(string query)
+        private static int GoQuery(string query)
         {
             SqlConnection sqlConnection = new SqlConnection(m_connection_string); // инициализируем соединение с БД
             try
@@ -163,7 +156,7 @@ namespace mcustore
         /// <param name="quantity">Количество на складе</param>
         /// <param name="price">Цена</param>
         /// <returns>1 - в случае успешного запроса, 0 - в случае, если запрос не удалось выполнить, -1 - в случае ошибки</returns>
-        public int CreateNewMicrocontroller(string name, int quantity, int price)
+        public static int CreateNewMicrocontroller(string name, int quantity, int price)
         {
             string sql = "INSERT INTO Microcontrollers (Microcontroller_name, Quantity, Price) VALUES (N'" + name + "', " + quantity + ", " + price + ")";
             return GoQuery(sql);
@@ -173,7 +166,7 @@ namespace mcustore
         /// <param name="name">Название микроконтроллера (должно быть в БД)</param>
         /// <param name="plus">Количество, которое прибавить</param>
         /// <returns>1 - в случае успешного добавления, 0 - в случае, если запрос не удалось выполнить, -1 - в случае ошибки</returns>
-        public int PlusQuantity(string name, int plus)
+        public static int PlusQuantity(string name, int plus)
         {
             string sql = "SELECT Quantity FROM Microcontrollers WHERE Microcontroller_name = N'" + name + "';";
             List<List<string>> info = ReadDataToMass(sql);
@@ -192,7 +185,7 @@ namespace mcustore
         /// <param name="new_quantity">Новое количество на складе</param>
         /// <param name="new_price">Новая цена за штуку</param>
         /// <returns>1 - в случае успешного изменения, 0 - в случае, если запрос не удалось выполнить, -1 - в случае ошибки</returns>
-        public int EditMicrocontroller(string name, string new_name, int new_quantity, int new_price)
+        public static int EditMicrocontroller(string name, string new_name, int new_quantity, int new_price)
         {
             string sql = "SELECT Quantity FROM Microcontrollers WHERE Microcontroller_name = N'" + name + "';";
             List<List<string>> info = ReadDataToMass(sql);
@@ -205,7 +198,7 @@ namespace mcustore
         /// <summary>Удаляет микроконтроллер</summary>
         /// <param name="name">Название микроконтроллера</param>
         /// <returns>1 - в случае успешного удаления, 0 - в случае, если запрос не удалось выполнить (микроконтроллер не найден или др. причина), -1 - в случае ошибки</returns>
-        public int DeleteMicrocontroller(string name)
+        public static int DeleteMicrocontroller(string name)
         {
             string sql = "SELECT * FROM Microcontrollers WHERE Microcontroller_name = N'" + name + "';";
             List<List<string>> info = ReadDataToMass(sql);
@@ -221,7 +214,7 @@ namespace mcustore
         /// <param name="microcontrollers_names">Одномерный список названий заказываемых микроконтроллеров</param>
         /// <param name="microcontrollers_quantities">Одномерный список соответствующего количества заказываемых микроконтроллеров</param>
         /// <returns>1 - в случае успешного создания, 0 - в случае, если запрос не удалось выполнить, -1 - в случае ошибки</returns>
-        public int CreateNewOrder(string company_name, List<string> microcontrollers_names, List<int> microcontrollers_quantities)
+        public static int CreateNewOrder(string company_name, List<string> microcontrollers_names, List<int> microcontrollers_quantities)
         {
             string sql = "INSERT INTO Orders (Company_name, Datetime) VALUES (N'" + company_name + "', CONVERT (date, GETDATE()));";
             int result = GoQuery(sql);
@@ -251,7 +244,7 @@ namespace mcustore
 
         /// <summary>Возвращает одномерный список, содержащий названия всех созданных микроконтроллеров в таблице Microcontrollers</summary>
         /// <returns>Одномерный список</returns>
-        public List<string> GetAllMicrocontrollersNames() {
+        public static List<string> GetAllMicrocontrollersNames() {
             string sql = "SELECT Microcontroller_name FROM Microcontrollers";
             List<List<string>> info = ReadDataToMass(sql);
             if (info == null) return null; // в случае ошибки
