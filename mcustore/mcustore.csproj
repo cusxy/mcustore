@@ -64,6 +64,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataBaseClass.cs" />
+    <Compile Include="mcustoredatabaseDataSet.cs">
+      <DependentUpon>mcustoredatabaseDataSet.xsd</DependentUpon>
+    </Compile>
     <Compile Include="mcustoredatabaseDataSet.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

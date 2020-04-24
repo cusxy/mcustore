@@ -23,7 +23,6 @@ namespace mcustore
             catch // в случае возникновения какого-либо исключения
             {
                 return false;
-                //MessageBox.Show("Ошибка подключения к базе данных!", "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             sqlConnection.Close(); // закрываем соединение с БД
             return true;
@@ -81,10 +80,10 @@ namespace mcustore
             if (orders_list == null) return null; // в случае ошибки
 
             List<List<string>> result = new List<List<string>>();
-            double all_price = 0;
 
             for (int i = 0; i < orders_list.Count; i++) // для каждого заказа
             {
+                double all_price = 0;
                 result.Add(new List<string>()); 
                 result[i].Add(orders_list[i][0]); // id заказа 
                 result[i].Add(orders_list[i][1]); // название компании
@@ -93,14 +92,15 @@ namespace mcustore
                 int order_id = Convert.ToInt32(orders_list[i][0]);
                 string sql2 = "SELECT Microcontrollers.Microcontroller_name, order_microcontroller.Quantity, Microcontrollers.Price FROM Microcontrollers, order_microcontroller WHERE (Microcontrollers.Microcontroller_id = order_microcontroller.Microcontroller_id) AND (order_microcontroller.Order_id = " + order_id + ");";
                 List<List<string>> microcontroller_info_list = ReadDataToMass(sql2);
+                double price = 0;
                 for (int i2 = 0; i2 < microcontroller_info_list.Count; i2++) {
                     if (i2 != 0) {
                         microcontrollers_info += "\n";
                     }
                     microcontrollers_info += microcontroller_info_list[i2][0] + " (" + microcontroller_info_list[i2][1] + " шт.)";
-                    double price = Convert.ToDouble(microcontroller_info_list[i2][2]) * Convert.ToInt32(microcontroller_info_list[i2][1]); // количество микроконтроллеров умножаем на цену
-                    all_price += price;
+                    price += Convert.ToDouble(microcontroller_info_list[i2][2]) * Convert.ToInt32(microcontroller_info_list[i2][1]); // количество микроконтроллеров умножаем на цену
                 }
+                all_price += price;
                 result[i].Add(microcontrollers_info); // информация о микроконтроллерах и их количестве
                 result[i].Add(all_price.ToString()); // общая стоимость
                 result[i].Add(orders_list[i][2]); // название компании
@@ -117,13 +117,12 @@ namespace mcustore
             // Название микроконтроллера - Количество - Цена за штуку
 
             string sql = "SELECT Microcontroller_name, Quantity, Price FROM Microcontrollers WHERE (Microcontroller_name LIKE N'%" + name_contains + "%');";
-
             return ReadDataToMass(sql);
         }
 
         /// <summary>Выполняет запрос без возврата значения и без изменения чего-либо на форме</summary>
         /// <param name="query">Запрос</param>
-        /// <returns>1 - в случае успешного запроса, 0 - в случае, если запрос не удалось выполнить, -1 - в случае ошибки</returns>
+        /// <returns>1 - в случае успешного запроса, -1 - в случае ошибки</returns>
         private static int GoQuery(string query)
         {
             SqlConnection sqlConnection = new SqlConnection(m_connection_string); // инициализируем соединение с БД
@@ -133,18 +132,9 @@ namespace mcustore
 
                 SqlCommand sqlCommand = new SqlCommand(query, sqlConnection); // создание SQL команды с указанным запросом
                 SqlDataReader reader = sqlCommand.ExecuteReader(); // выполнение SQL команды
-                if (reader.HasRows)
-                {
-                    reader.Close();
-                    sqlConnection.Close(); // закрываем соединение с БД
-                    return 1;
-                }
-                else
-                {
-                    reader.Close();
-                    sqlConnection.Close(); // закрываем соединение с БД
-                    return 0;
-                }
+                reader.Close();
+                sqlConnection.Close(); // закрываем соединение с БД
+                return 1;
             }
             catch
             {
@@ -158,10 +148,20 @@ namespace mcustore
         /// <param name="quantity">Количество на складе</param>
         /// <param name="price">Цена</param>
         /// <returns>1 - в случае успешного запроса, 0 - в случае, если запрос не удалось выполнить, -1 - в случае ошибки</returns>
-        public static int CreateNewMicrocontroller(string name, int quantity, int price)
+        public static int CreateNewMicrocontroller(string name, int quantity, double price)
         {
-            string sql = "INSERT INTO Microcontrollers (Microcontroller_name, Quantity, Price) VALUES (N'" + name + "', " + quantity + ", " + price + ")";
+            string sql = "EXECUTE AddNewMicrocontroller N'" + name + "', " + quantity + ", " + price.ToString(System.Globalization.CultureInfo.InvariantCulture) + ";";
             return GoQuery(sql);
+        }
+
+        /// <summary>Возвращает ID микроконтроллера по его названию</summary>
+        /// <param name="name">Название микроконтроллера</param>
+        /// <returns>ID микроконтроллера (возвращает -1, если возникла ошибка)</returns>
+        private static int GetMicrocontrollerIdFromName(string name) {
+            string sql = "SELECT Microcontroller_id FROM Microcontrollers WHERE Microcontroller_name = N'" + name + "';";
+            List<List<string>> info = ReadDataToMass(sql);
+            if (info.Count == 0 || info == null) return -1;
+            return Convert.ToInt32(info[0][0]);
         }
 
         /// <summary>Добавляет указанное количество выбранного микроконтроллера на склад</summary>
@@ -174,10 +174,7 @@ namespace mcustore
             List<List<string>> info = ReadDataToMass(sql);
             if (info == null) return -1; // в случае ошибки
 
-            int total_quantity = Convert.ToInt32(info[0][0]);
-            total_quantity += plus;
-
-            string sql2 = "UPDATE Microcontrollers SET Quantity = " + total_quantity + ";";
+            string sql2 = "EXECUTE AddMicrocontrollers " + GetMicrocontrollerIdFromName(name) + ", " + plus + ";";
             return GoQuery(sql2);
         }
 
@@ -193,7 +190,7 @@ namespace mcustore
             List<List<string>> info = ReadDataToMass(sql);
             if (info == null) return -1; // в случае ошибки
 
-            string sql2 = "UPDATE Microcontrollers SET Microcontroller_name = N'" + new_name + "', Quantity = " + new_quantity + ", Price = " + new_price + ";";
+            string sql2 = "UPDATE Microcontrollers SET Microcontroller_name = N'" + new_name + "', Quantity = " + new_quantity + ", Price = " + new_price + " WHERE Microcontroller_name = " + name + ";";
             return GoQuery(sql2);
         }
 
@@ -218,7 +215,7 @@ namespace mcustore
         /// <returns>1 - в случае успешного создания, 0 - в случае, если запрос не удалось выполнить, -1 - в случае ошибки</returns>
         public static int CreateNewOrder(string company_name, List<string> microcontrollers_names, List<int> microcontrollers_quantities)
         {
-            string sql = "INSERT INTO Orders (Company_name, Datetime) VALUES (N'" + company_name + "', CONVERT (date, GETDATE()));";
+            string sql = "EXECUTE AddNewOrder '2015-05-19 10:11:12', N'" + company_name + "';";
             int result = GoQuery(sql);
             if (result != 1) return result;
 
@@ -226,17 +223,12 @@ namespace mcustore
             List<List<string>> info = ReadDataToMass(sql2);
             if (info == null) return -1; // в случае ошибки
             if (info.Count == 0) return 0; // в случае отсутствия такого микроконтроллера
-            int order_id = Convert.ToInt32(info[0][0]);
+            int order_id = Convert.ToInt32(info[info.Count - 1][0]);
 
             for (int i = 0; i < microcontrollers_names.Count; i++) {
-                string sql3 = "SELECT Microcontroller_id FROM Microcontrollers WHERE Microcontroller_name = N'" + microcontrollers_names[i] + "';";
-                List<List<string>> info_mc_id = ReadDataToMass(sql3);
-                if (info_mc_id == null) return -1; // в случае ошибки
-                if (info_mc_id.Count == 0) return 0; // в случае отсутствия такого микроконтроллера
+                int microcontroller_id = GetMicrocontrollerIdFromName(microcontrollers_names[i]);
 
-                int microcontroller_id = Convert.ToInt32(info_mc_id[0][0]);
-
-                string sql4 = "INSERT INTO order_microcontroller (Order_id, Microcontroller_id, Quantity) VALUES (" + order_id + ", " + microcontroller_id + ", " + microcontrollers_quantities[i] + ");";
+                string sql4 = "EXECUTE AddMicrocontrollerToOrder " + order_id + ", " + microcontroller_id + ", " + microcontrollers_quantities[i].ToString(System.Globalization.CultureInfo.InvariantCulture) + ";";
                 result = GoQuery(sql4);
                 if (result != 1) return result;
             }
