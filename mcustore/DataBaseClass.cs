@@ -172,7 +172,7 @@ namespace mcustore
         /// <summary>Добавляет указанное количество выбранного микроконтроллера на склад</summary>
         /// <param name="name">Название микроконтроллера (должно быть в БД)</param>
         /// <param name="plus">Количество, которое прибавить</param>
-        /// <returns>1 - в случае успешного запроса, 0 - в случае, если запрос не удалось выполнить, -1 - в случае ошибки</returns>
+        /// <returns>1 - в случае успешного добавления, 0 - в случае, если запрос не удалось выполнить, -1 - в случае ошибки</returns>
         public int PlusQuantity(string name, int plus)
         {
             string sql = "SELECT Quantity FROM Microcontrollers WHERE Microcontroller_name = N'" + name + "';";
@@ -183,6 +183,22 @@ namespace mcustore
             total_quantity += plus;
 
             string sql2 = "UPDATE Microcontrollers SET Quantity = " + total_quantity + ";";
+            return GoQuery(sql2);
+        }
+
+        /// <summary>Изменяет информацию об указанном микроконтроллере</summary>
+        /// <param name="name">Название микроконтроллера</param>
+        /// <param name="new_name">Новое название</param>
+        /// <param name="new_quantity">Новое количество на складе</param>
+        /// <param name="new_price">Новая цена за штуку</param>
+        /// <returns>1 - в случае успешного изменения, 0 - в случае, если запрос не удалось выполнить, -1 - в случае ошибки</returns>
+        public int EditMicrocontroller(string name, string new_name, int new_quantity, int new_price)
+        {
+            string sql = "SELECT Quantity FROM Microcontrollers WHERE Microcontroller_name = N'" + name + "';";
+            List<List<string>> info = ReadDataToMass(sql);
+            if (info == null) return -1; // в случае ошибки
+
+            string sql2 = "UPDATE Microcontrollers SET Microcontroller_name = N'" + new_name + "', Quantity = " + new_quantity + ", Price = " + new_price + ";";
             return GoQuery(sql2);
         }
     }
