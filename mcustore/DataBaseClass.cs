@@ -81,7 +81,7 @@ namespace mcustore
             if (orders_list == null) return null; // в случае ошибки
 
             List<List<string>> result = new List<List<string>>();
-            int all_price = 0;
+            double all_price = 0;
 
             for (int i = 0; i < orders_list.Count; i++) // для каждого заказа
             {
@@ -98,7 +98,7 @@ namespace mcustore
                         microcontrollers_info += ", ";
                     }
                     microcontrollers_info += microcontroller_info_list[i2][0] + " (" + microcontroller_info_list[i2][1] + " шт.)";
-                    int price = Convert.ToInt32(microcontroller_info_list[i2][2]) * Convert.ToInt32(microcontroller_info_list[i2][1]); // количество микроконтроллеров умножаем на цену
+                    double price = Convert.ToDouble(microcontroller_info_list[i2][2]) * Convert.ToInt32(microcontroller_info_list[i2][1]); // количество микроконтроллеров умножаем на цену
                     all_price += price;
                 }
                 result[i].Add(microcontrollers_info); // информация о микроконтроллерах и их количестве
