@@ -192,12 +192,12 @@ namespace mcustore
         /// <param name="new_quantity">Новое количество на складе</param>
         /// <param name="new_price">Новая цена за штуку</param>
         /// <returns>1 - в случае успешного изменения, 0 - в случае, если запрос не удалось выполнить, -1 - в случае ошибки, -2 - если МК не найден</returns>
-        public static int EditMicrocontroller(string name, string new_name, int new_quantity, int new_price)
+        public static int EditMicrocontroller(string name, string new_name, int new_quantity, double new_price)
         {
             int mc_id = GetMicrocontrollerIdFromName(name);
             if (mc_id < 0) return mc_id; // в случае ошибки или отсутствия такого микроконтроллера
 
-            string sql2 = "UPDATE Microcontrollers SET Microcontroller_name = N'" + new_name + "', Quantity = " + new_quantity + ", Price = " + new_price + " WHERE Microcontroller_name = " + name + ";";
+            string sql2 = "UPDATE Microcontrollers SET Microcontroller_name = N'" + new_name + "', Quantity = " + new_quantity + ", Price = " + new_price.ToString(System.Globalization.CultureInfo.InvariantCulture) + " WHERE Microcontroller_name = " + name + ";";
             return GoQuery(sql2);
         }
 
