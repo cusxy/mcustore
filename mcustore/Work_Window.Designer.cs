@@ -41,6 +41,10 @@
             this.button4 = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.button7 = new System.Windows.Forms.Button();
+            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.button5 = new System.Windows.Forms.Button();
+            this.label9 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
@@ -52,6 +56,12 @@
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.button8 = new System.Windows.Forms.Button();
+            this.button9 = new System.Windows.Forms.Button();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
+            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label3 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
@@ -65,16 +75,6 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.mcustoredatabaseDataSet = new mcustore.mcustoredatabaseDataSet();
             this.mcustoredatabaseDataSetBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.label9 = new System.Windows.Forms.Label();
-            this.button5 = new System.Windows.Forms.Button();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
-            this.button7 = new System.Windows.Forms.Button();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
-            this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
-            this.label11 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
-            this.button8 = new System.Windows.Forms.Button();
-            this.button9 = new System.Windows.Forms.Button();
             this.tabPage2.SuspendLayout();
             this.groupBox5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
@@ -133,7 +133,7 @@
             this.textBox4.Name = "textBox4";
             this.textBox4.Size = new System.Drawing.Size(204, 30);
             this.textBox4.TabIndex = 11;
-            this.textBox4.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TextBox3_KeyPress);
+            this.textBox4.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.WriteErrorChecking);
             // 
             // numericUpDown2
             // 
@@ -212,6 +212,44 @@
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Поиск";
             // 
+            // button7
+            // 
+            this.button7.Location = new System.Drawing.Point(29, 115);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(204, 51);
+            this.button7.TabIndex = 14;
+            this.button7.Text = "Сброс";
+            this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.Button7_Click);
+            // 
+            // comboBox2
+            // 
+            this.comboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox2.FormattingEnabled = true;
+            this.comboBox2.Location = new System.Drawing.Point(432, 44);
+            this.comboBox2.Name = "comboBox2";
+            this.comboBox2.Size = new System.Drawing.Size(121, 32);
+            this.comboBox2.TabIndex = 13;
+            // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(110, 115);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(204, 51);
+            this.button5.TabIndex = 12;
+            this.button5.Text = "Найти";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.Button5_Click);
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(25, 50);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(137, 24);
+            this.label9.TabIndex = 6;
+            this.label9.Text = "Название МК";
+            // 
             // groupBox3
             // 
             this.groupBox3.BackColor = System.Drawing.Color.White;
@@ -238,7 +276,7 @@
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(204, 30);
             this.textBox3.TabIndex = 7;
-            this.textBox3.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TextBox3_KeyPress);
+            this.textBox3.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.WriteErrorChecking);
             // 
             // numericUpDown1
             // 
@@ -363,6 +401,60 @@
             this.groupBox2.TabIndex = 2;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Поиск заказа";
+            // 
+            // button8
+            // 
+            this.button8.BackColor = System.Drawing.Color.White;
+            this.button8.Location = new System.Drawing.Point(106, 312);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(204, 51);
+            this.button8.TabIndex = 16;
+            this.button8.Text = "Сброс";
+            this.button8.UseVisualStyleBackColor = false;
+            this.button8.Click += new System.EventHandler(this.Button8_Click);
+            // 
+            // button9
+            // 
+            this.button9.BackColor = System.Drawing.Color.White;
+            this.button9.Location = new System.Drawing.Point(187, 312);
+            this.button9.Name = "button9";
+            this.button9.Size = new System.Drawing.Size(204, 51);
+            this.button9.TabIndex = 15;
+            this.button9.Text = "Найти";
+            this.button9.UseVisualStyleBackColor = false;
+            this.button9.Click += new System.EventHandler(this.Button9_Click);
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(50, 180);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(32, 24);
+            this.label12.TabIndex = 3;
+            this.label12.Text = "до";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(46, 62);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(30, 24);
+            this.label11.TabIndex = 2;
+            this.label11.Text = "от";
+            // 
+            // dateTimePicker2
+            // 
+            this.dateTimePicker2.Location = new System.Drawing.Point(154, 180);
+            this.dateTimePicker2.Name = "dateTimePicker2";
+            this.dateTimePicker2.Size = new System.Drawing.Size(200, 30);
+            this.dateTimePicker2.TabIndex = 1;
+            // 
+            // dateTimePicker1
+            // 
+            this.dateTimePicker1.Location = new System.Drawing.Point(163, 62);
+            this.dateTimePicker1.Name = "dateTimePicker1";
+            this.dateTimePicker1.Size = new System.Drawing.Size(200, 30);
+            this.dateTimePicker1.TabIndex = 0;
             // 
             // groupBox1
             // 
@@ -540,98 +632,6 @@
             this.mcustoredatabaseDataSetBindingSource.DataSource = this.mcustoredatabaseDataSet;
             this.mcustoredatabaseDataSetBindingSource.Position = 0;
             // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(25, 50);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(137, 24);
-            this.label9.TabIndex = 6;
-            this.label9.Text = "Название МК";
-            // 
-            // button5
-            // 
-            this.button5.Location = new System.Drawing.Point(110, 115);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(204, 51);
-            this.button5.TabIndex = 12;
-            this.button5.Text = "Найти";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.Button5_Click);
-            // 
-            // comboBox2
-            // 
-            this.comboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(432, 44);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(121, 32);
-            this.comboBox2.TabIndex = 13;
-            // 
-            // button7
-            // 
-            this.button7.Location = new System.Drawing.Point(29, 115);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(204, 51);
-            this.button7.TabIndex = 14;
-            this.button7.Text = "Сброс";
-            this.button7.UseVisualStyleBackColor = true;
-            this.button7.Click += new System.EventHandler(this.Button7_Click);
-            // 
-            // dateTimePicker1
-            // 
-            this.dateTimePicker1.Location = new System.Drawing.Point(163, 62);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(200, 30);
-            this.dateTimePicker1.TabIndex = 0;
-            // 
-            // dateTimePicker2
-            // 
-            this.dateTimePicker2.Location = new System.Drawing.Point(154, 180);
-            this.dateTimePicker2.Name = "dateTimePicker2";
-            this.dateTimePicker2.Size = new System.Drawing.Size(200, 30);
-            this.dateTimePicker2.TabIndex = 1;
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(46, 62);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(30, 24);
-            this.label11.TabIndex = 2;
-            this.label11.Text = "от";
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(50, 180);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(32, 24);
-            this.label12.TabIndex = 3;
-            this.label12.Text = "до";
-            // 
-            // button8
-            // 
-            this.button8.BackColor = System.Drawing.Color.White;
-            this.button8.Location = new System.Drawing.Point(106, 312);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(204, 51);
-            this.button8.TabIndex = 16;
-            this.button8.Text = "Сброс";
-            this.button8.UseVisualStyleBackColor = false;
-            this.button8.Click += new System.EventHandler(this.Button8_Click);
-            // 
-            // button9
-            // 
-            this.button9.BackColor = System.Drawing.Color.White;
-            this.button9.Location = new System.Drawing.Point(187, 312);
-            this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(204, 51);
-            this.button9.TabIndex = 15;
-            this.button9.Text = "Найти";
-            this.button9.UseVisualStyleBackColor = false;
-            this.button9.Click += new System.EventHandler(this.Button9_Click);
-            // 
             // Work_Window
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -644,7 +644,6 @@
             this.Name = "Work_Window";
             this.Text = "БД \"Заказ микроконтроллеров\"";
             this.Load += new System.EventHandler(this.Work_Window_Load);
-            this.Shown += new System.EventHandler(this.Work_Window_Shown);
             this.Resize += new System.EventHandler(this.Work_Window_Resize);
             this.tabPage2.ResumeLayout(false);
             this.groupBox5.ResumeLayout(false);

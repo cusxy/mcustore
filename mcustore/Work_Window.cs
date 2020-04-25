@@ -16,9 +16,10 @@ namespace mcustore
         {
             InitializeComponent();
         }
-        List<List<string>> dataOrder;//массив с данными запроса к первой таблице
-        List<List<string>> dataOrder2;//массив с данными запроса к второй таблице
-        List<List<string>> dataGrid3;//массив с данными третий таблицы
+        List<List<string>> OneMassData;//Первый массив - массив с данными для первой таблицы.
+        List<List<string>> TwoMassData;//Второй массив - массив с данными для второй таблицы.
+        List<List<string>> ThreeMassData;//Третий массив - массив с данными для третьей таблицы.
+        bool flag = false;//Переменная флаг, чтобы узнать первый ли раз открыта форма.
         /// <summary>
         /// закгрузка формы
         /// </summary>
@@ -26,66 +27,121 @@ namespace mcustore
         /// <param name="e"></param>
         private void Work_Window_Load(object sender, EventArgs e)
         {
-            datagGridCreate(sender, e);
+            Work_Window_Resize(sender, e);
+            CheckingConnectionWithTheDatabaseANDFillingoutTwoArraysData();
+            FillingInTheHeadingsOfTableOne();
+            FillingInTheHeadingsOfTableTwo();
+            FillingInTheHeadingsOfTableThree();
+            FillingTheFirstTableWithData();
+            FillingTheSecondTableWithDataAndComboBoxOneAndTwo();
+            checkListBox();
+            FillingtheThirdArraywithData();
         }
         /// <summary>
-        /// Функция заполнения dataGridView
+        /// 
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void datagGridCreate(object sender, EventArgs e)
+        private void FillingInTheHeadingsOfTableOne()
         {
-            Work_Window_Resize(sender, e);
             dataGridView1.ColumnCount = 5;
             dataGridView1.Columns[0].Name = "Номер заказа";
             dataGridView1.Columns[1].Name = "Компания";
             dataGridView1.Columns[2].Name = "Модели микроконтроллеров (шт.)";
             dataGridView1.Columns[3].Name = "Цена ($)";
             dataGridView1.Columns[4].Name = "Дата";
-
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        private void FillingInTheHeadingsOfTableTwo()
+        {
             dataGridView2.ColumnCount = 3;
             dataGridView2.Columns[0].Name = "Модель микроконтроллера";
             dataGridView2.Columns[1].Name = "Количество";
             dataGridView2.Columns[2].Name = "Цена за шт./$";
-
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        private void FillingInTheHeadingsOfTableThree()
+        {
             dataGridView3.ColumnCount = 3;
             dataGridView3.Columns[0].Name = "Модель";
             dataGridView3.Columns[1].Name = "Количество";
             dataGridView3.Columns[2].Name = "Цена ($)";
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        private void CheckingConnectionWithTheDatabaseANDFillingoutTwoArraysData()
+        {
             if (DataBaseClass.IsConnect())
             {
-                dataOrder = DataBaseClass.SelectOrdersData();
-                dataGridView1.Rows.Clear();
-                dataGridView2.Rows.Clear();
-                comboBox1.Items.Clear();
-                comboBox2.Items.Clear();
-                for (int i = 0; i < dataOrder.Count; i++)
+                OneMassData = DataBaseClass.SelectOrdersData();
+                TwoMassData = DataBaseClass.SelectMicrocontrollersData();
+                if(!flag)
                 {
-                    dataGridView1.Rows.Add();
-                    for (int j = 0; j < dataOrder[i].Count; j++)
-                    {
-                        dataGridView1.Rows[i].Cells[j].Value = dataOrder[i][j];
-                    }
+                    MessageBox.Show("Соединение c БД установлено.", "Соединение!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    flag = true;
                 }
-                dataOrder2 = DataBaseClass.SelectMicrocontrollersData();
-                for (int i = 0; i < dataOrder2.Count; i++)
-                {
-                    dataGridView2.Rows.Add();
-                    for (int j = 0; j < dataOrder2[i].Count; j++)
-                    {
-                        dataGridView2.Rows[i].Cells[j].Value = dataOrder2[i][j];
-
-                    }
-                    comboBox1.Items.Add(dataOrder2[i][0]);
-                    comboBox2.Items.Add(dataOrder2[i][0]);
-                }
-                checkedListBox1.Items.Clear();
-                checkListBox();
-                dataGridFunction();
             }
             else
             {
                 MessageBox.Show("Ошибка подключения к базе данных!", "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.Close();
+            }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        private void FillingTheFirstTableWithData()
+        {
+            dataGridView1.Rows.Clear();
+            for (int i = 0; i < OneMassData.Count; i++)
+            {
+                dataGridView1.Rows.Add();
+                for (int j = 0; j < OneMassData[i].Count; j++)
+                {
+                    dataGridView1.Rows[i].Cells[j].Value = OneMassData[i][j];
+                }
+            }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        private void FillingTheSecondTableWithDataAndComboBoxOneAndTwo()
+        {
+            dataGridView2.Rows.Clear();
+            comboBox1.Items.Clear();
+            comboBox2.Items.Clear();
+            for (int i = 0; i < TwoMassData.Count; i++)
+            {
+                dataGridView2.Rows.Add();
+                for (int j = 0; j < TwoMassData[i].Count; j++)
+                {
+                    dataGridView2.Rows[i].Cells[j].Value = TwoMassData[i][j];
+
+                }
+                comboBox1.Items.Add(TwoMassData[i][0]);
+                comboBox2.Items.Add(TwoMassData[i][0]);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void FillingTheThirdDataTable()
+        {
+            dataGridView3.Rows.Clear();
+            int j = 0;
+            for (int i = 0; i < ThreeMassData.Count; i++)
+            {
+                if (ThreeMassData[i][0] == "true")
+                {
+                    dataGridView3.Rows.Add();
+                    dataGridView3.Rows[j].Cells[0].Value = ThreeMassData[i][1];
+                    dataGridView3.Rows[j].Cells[1].Value = ThreeMassData[i][2];
+                    j++;
+                }
             }
         }
         /// <summary>
@@ -162,67 +218,57 @@ namespace mcustore
         /// </summary>
         private void checkListBox()
         {
-            for (int i = 0; i < dataOrder2.Count; i++)
+            checkedListBox1.Items.Clear();
+            for (int i = 0; i < TwoMassData.Count; i++)
             {
-                 checkedListBox1.Items.Add(dataOrder2[i][0],false);
+                 checkedListBox1.Items.Add(TwoMassData[i][0],false);
             }
         }
         /// <summary>
         /// заполнение данными из массива третьей таблицы
         /// </summary>
-        private void dataGridFunction()
+        private void FillingtheThirdArraywithData()
         {
-            dataGrid3 = new List<List<string>>();
-            for (int i=0;i< dataOrder2.Count; i++)
+            ThreeMassData = new List<List<string>>();
+            for (int i=0;i< TwoMassData.Count; i++)
             {
-                dataGrid3.Add(new List<string>());
-                dataGrid3[i].Add("false");
-                dataGrid3[i].Add(dataOrder2[i][0]);
-                dataGrid3[i].Add("0");
-                dataGrid3[i].Add(dataOrder2[i][2]);
+                ThreeMassData.Add(new List<string>());
+                ThreeMassData[i].Add("false");
+                ThreeMassData[i].Add(TwoMassData[i][0]);
+                ThreeMassData[i].Add("0");
+                ThreeMassData[i].Add(TwoMassData[i][2]);
             }
         }
         /// <summary>
         /// поиск выделенных элементов в checkListBox
         /// </summary>
-        private void ItemCheck2()
+        private void SearchForFeaturedItems()
         {
            for(int i=0;i<checkedListBox1.Items.Count;i++)
            {
-                if(checkedListBox1.GetItemChecked(i) && dataGrid3[i][1]==checkedListBox1.GetItemText(checkedListBox1.Items[i]))
+                if(checkedListBox1.GetItemChecked(i) && ThreeMassData[i][1]==checkedListBox1.GetItemText(checkedListBox1.Items[i]))
                 {
-                    dataGrid3[i][0] = "true";
+                    ThreeMassData[i][0] = "true";
                 }
                 else
                 {
-                    dataGrid3[i][0] = "false";
-                    dataGrid3[i][1] = dataOrder2[i][0];
-                    dataGrid3[i][2]="0";
+                    ThreeMassData[i][0] = "false";
+                    ThreeMassData[i][1] = TwoMassData[i][0];
+                    ThreeMassData[i][2]="0";
                 }
             }
         }
         
         private void CheckedListBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            ItemCheck2();
-            dataGridView3.Rows.Clear();
-            int j = 0;
-            for (int i = 0; i < dataGrid3.Count; i++)
-            {
-                if(dataGrid3[i][0]=="true")
-                {
-                    dataGridView3.Rows.Add();
-                    dataGridView3.Rows[j].Cells[0].Value = dataGrid3[i][1];
-                    dataGridView3.Rows[j].Cells[1].Value = dataGrid3[i][2];
-                    j++;
-                }
-            }
-            price();
+            SearchForFeaturedItems();
+            FillingTheThirdDataTable();
+            CountingTotalOrderCosts();
         }
         /// <summary>
         /// подсчет общей стоимости заказа
         /// </summary>
-        private void price()
+        private void CountingTotalOrderCosts()
         {
             int price = 0;
             for (int i = 0; i < dataGridView3.Rows.Count; i++)
@@ -231,53 +277,58 @@ namespace mcustore
             }
             label3.Text = "Стоимость заказа " + price + "$";
         }
-        private void DataGridView3_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="IndexColumn"></param>
+        /// <param name="IndexRow"></param>
+        private void TrackingChangesintheThirdTableAndcataChange(int IndexColumn,int IndexRow)
         {
-            if (e.ColumnIndex == 0)
+            if (IndexColumn == 0)
             {
                 int j = 0;
-                for (int i = 0; i < dataOrder2.Count; i++)
+                for (int i = 0; i < TwoMassData.Count; i++)
                 {
-                    if(dataGrid3[i][0]=="true")
+                    if (ThreeMassData[i][0] == "true")
                     {
-                        if(j==e.RowIndex)
+                        if (j == IndexRow)
                         {
-                            dataGridView3.Rows[e.RowIndex].Cells[0].Value = dataGrid3[i][1];
+                            dataGridView3.Rows[IndexRow].Cells[0].Value = ThreeMassData[i][1];
                         }
                         j++;
                     }
                 }
             }
-            if (e.ColumnIndex == 1)
+            if (IndexColumn == 1)
             {
                 int temp = 0;
                 try
                 {
-                    temp = Convert.ToInt32(dataGridView3.Rows[e.RowIndex].Cells[1].Value);
-                    for(int i=0;i<dataGrid3.Count;i++)
+                    temp = Convert.ToInt32(dataGridView3.Rows[IndexRow].Cells[1].Value);
+                    for (int i = 0; i < ThreeMassData.Count; i++)
                     {
-                        if(dataGrid3[i][1]== dataGridView3.Rows[e.RowIndex].Cells[0].Value.ToString())
+                        if (ThreeMassData[i][1] == dataGridView3.Rows[IndexRow].Cells[0].Value.ToString())
                         {
-                            if (temp > Convert.ToInt32(dataOrder2[i][1]))
+                            if (temp > Convert.ToInt32(TwoMassData[i][1]))
                             {
-                                MessageBox.Show("Такого количество микроконтроллеров модели " + dataGridView3.Rows[e.RowIndex].Cells[0].Value.ToString() + " нет");
+                                MessageBox.Show("Такого количество микроконтроллеров модели " + dataGridView3.Rows[IndexRow].Cells[0].Value.ToString() + " нет");
                                 temp = 0;
                             }
                             else
                             {
-                                dataGrid3[i][2] = temp.ToString();
-                                dataGridView3.Rows[e.RowIndex].Cells[2].Value = Convert.ToDouble(dataGrid3[i][3]) * Convert.ToInt32(dataGrid3[i][2]);
+                                ThreeMassData[i][2] = temp.ToString();
+                                dataGridView3.Rows[IndexRow].Cells[2].Value = Convert.ToDouble(ThreeMassData[i][3]) * Convert.ToInt32(ThreeMassData[i][2]);
                             }
                         }
                     }
-                    if(temp==0)
+                    if (temp == 0)
                     {
-                        for (int i = 0; i < dataGrid3.Count; i++)
+                        for (int i = 0; i < ThreeMassData.Count; i++)
                         {
-                            if (dataGrid3[i][1] == dataGridView3.Rows[e.RowIndex].Cells[0].Value.ToString())
+                            if (ThreeMassData[i][1] == dataGridView3.Rows[IndexRow].Cells[0].Value.ToString())
                             {
-                                dataGrid3[i][2] = "1";
-                                dataGridView3.Rows[e.RowIndex].Cells[1].Value = 1;
+                                ThreeMassData[i][2] = "1";
+                                dataGridView3.Rows[IndexRow].Cells[1].Value = 1;
                             }
                         }
                     }
@@ -285,42 +336,46 @@ namespace mcustore
                 catch
                 {
                     MessageBox.Show("Буквы нельзя вводить!");
-                    for (int i = 0; i < dataGrid3.Count; i++)
+                    for (int i = 0; i < ThreeMassData.Count; i++)
                     {
-                        if (dataGrid3[i][1] == dataGridView3.Rows[e.RowIndex].Cells[0].Value.ToString())
+                        if (ThreeMassData[i][1] == dataGridView3.Rows[IndexRow].Cells[0].Value.ToString())
                         {
-                            dataGridView3.Rows[e.RowIndex].Cells[1].Value = dataGrid3[i][2];
+                            dataGridView3.Rows[IndexRow].Cells[1].Value = ThreeMassData[i][2];
                         }
                     }
                 }
-                price();
+                CountingTotalOrderCosts();
             }
-            if (e.ColumnIndex == 2)
+            if (IndexColumn == 2)
             {
                 try
                 {
-                    Convert.ToInt32(dataGridView3.Rows[e.RowIndex].Cells[2].Value);
-                    for (int i = 0; i < dataOrder2.Count; i++)
+                    Convert.ToInt32(dataGridView3.Rows[IndexRow].Cells[2].Value);
+                    for (int i = 0; i < TwoMassData.Count; i++)
                     {
-                        if (dataGridView3.Rows[e.RowIndex].Cells[0].Value == dataOrder2[i][0])
+                        if (dataGridView3.Rows[IndexRow].Cells[0].Value == TwoMassData[i][0])
                         {
-                            dataGridView3.Rows[e.RowIndex].Cells[2].Value = Convert.ToInt32(dataGrid3[i][2]) * Convert.ToDouble(dataOrder2[i][2]);
+                            dataGridView3.Rows[IndexRow].Cells[2].Value = Convert.ToInt32(ThreeMassData[i][2]) * Convert.ToDouble(TwoMassData[i][2]);
                             break;
                         }
                     }
                 }
                 catch
                 {
-                    for (int i = 0; i < dataOrder2.Count; i++)
+                    for (int i = 0; i < TwoMassData.Count; i++)
                     {
-                        if (dataGridView3.Rows[e.RowIndex].Cells[0].Value == dataOrder2[i][0])
+                        if (dataGridView3.Rows[IndexRow].Cells[0].Value == TwoMassData[i][0])
                         {
-                            dataGridView3.Rows[e.RowIndex].Cells[2].Value = Convert.ToInt32(dataGrid3[i][2]) * Convert.ToDouble(dataOrder2[i][2]);
+                            dataGridView3.Rows[IndexRow].Cells[2].Value = Convert.ToInt32(ThreeMassData[i][2]) * Convert.ToDouble(TwoMassData[i][2]);
                             break;
                         }
                     }
                 }
             }
+        }
+        private void DataGridView3_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            TrackingChangesintheThirdTableAndcataChange(e.ColumnIndex, e.RowIndex);
         }
         /// <summary>
         /// обработка кликов по разным кнопкам на форме
@@ -330,30 +385,33 @@ namespace mcustore
         private void Button1_Click(object sender, EventArgs e)
         {
             textBox1.Text = "";
-            for (int i = 0; i < checkedListBox1.Items.Count; i++)
-            {
-                checkedListBox1.SetItemChecked(i, false);
-            }
-            dataGridView3.Rows.Clear();
             label3.Text = "";
-            dataGrid3.Clear();
-            dataGridFunction();
+            dataGridView3.Rows.Clear();
+            ThreeMassData.Clear();
+            Work_Window_Load(sender, e);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        private void RequestFulfillmentCreateNewOrder()
+        {
+            string[] mass = new string[ThreeMassData.Count];
+            int[] array = new int[ThreeMassData.Count];
+            for (int i = 0; i < ThreeMassData.Count; i++)
+            {
+                if (ThreeMassData[i][0] == "true")
+                {
+                    mass[i] = ThreeMassData[i][1];
+                    array[i] = Convert.ToInt32(ThreeMassData[i][2]);
+                }
+            }
+            DataBaseClass.CreateNewOrder(textBox1.Text, mass.ToList(), array.ToList());
         }
         private void Button2_Click(object sender, EventArgs e)
         {
             if(textBox1.Text!="" && label3.Text!="" && label3.Text!="Стоимость заказа 0$")
             {
-                string[] mass = new string[dataGrid3.Count];
-                int[] array = new int[dataGrid3.Count];
-                for (int i = 0; i < dataGrid3.Count; i++)
-                {
-                    if (dataGrid3[i][0] == "true")
-                    {
-                        mass[i] = dataGrid3[i][1];
-                        array[i] = Convert.ToInt32(dataGrid3[i][2]);
-                    }
-                }
-                DataBaseClass.CreateNewOrder(textBox1.Text, mass.ToList(), array.ToList());
+                RequestFulfillmentCreateNewOrder();
                 Work_Window_Load(sender, e);
                 Button1_Click(sender, e);
             }
@@ -399,21 +457,10 @@ namespace mcustore
         {
             if (comboBox2.Text != "" )
             {
-                List<List<string>> dataOrder3;
-                dataGridView2.ColumnCount = 3;
-                dataGridView2.Columns[0].Name = "Модель микроконтроллера";
-                dataGridView2.Columns[1].Name = "Количество";
-                dataGridView2.Columns[2].Name = "Цена за шт./$";
-                dataGridView2.Rows.Clear();
-                dataOrder3 = DataBaseClass.SelectMicrocontrollersData(comboBox2.Text);
-                for (int i = 0; i < dataOrder3.Count; i++)
-                {
-                    dataGridView2.Rows.Add();
-                    for (int j = 0; j < dataOrder3[i].Count; j++)
-                    {
-                        dataGridView2.Rows[i].Cells[j].Value = dataOrder3[i][j];
-                    }
-                }
+                List<List<string>> MassTemp = TwoMassData;
+                TwoMassData=DataBaseClass.SelectMicrocontrollersData(comboBox2.Text);
+                FillingTheSecondTableWithDataAndComboBoxOneAndTwo();
+                TwoMassData = MassTemp;
             }
             else
             {
@@ -434,64 +481,27 @@ namespace mcustore
             string data1 = Convert.ToString(dateTimePicker1.Value.Year) + "-" + Convert.ToString(dateTimePicker1.Value.Month) + "-" + Convert.ToString(dateTimePicker1.Value.Day);
             string data2 = Convert.ToString(dateTimePicker2.Value.Year) + "-" + Convert.ToString(dateTimePicker2.Value.Month) + "-" + Convert.ToString(dateTimePicker2.Value.Day);
 
-            List<List<string>> dataOrder3;
-            dataGridView1.ColumnCount = 5;
-            dataGridView1.Columns[0].Name = "Номер заказа";
-            dataGridView1.Columns[1].Name = "Компания";
-            dataGridView1.Columns[2].Name = "Модели микроконтроллеров (шт.)";
-            dataGridView1.Columns[3].Name = "Цена ($)";
-            dataGridView1.Columns[4].Name = "Дата";
-            dataGridView1.Rows.Clear();
-            dataOrder3 = DataBaseClass.SelectOrdersData(data1, data2);
-            for (int i = 0; i < dataOrder3.Count; i++)
-            {
-                dataGridView1.Rows.Add();
-                for (int j = 0; j < dataOrder3[i].Count; j++)
-                {
-                    dataGridView1.Rows[i].Cells[j].Value = dataOrder3[i][j];
-                }
-            }
-
+            List<List<string>> MassTemp = OneMassData;
+            OneMassData = DataBaseClass.SelectOrdersData(data1, data2);
+            FillingTheFirstTableWithData();
+            OneMassData = MassTemp;
         }
-        /// <summary>
-        /// первая закгрузка формы и проверка соединения с БД
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Work_Window_Shown(object sender, EventArgs e)
+        private void WriteErrorChecking(object sender,KeyPressEventArgs n)
         {
-            Work_Window_Resize(sender, e);
-            if (DataBaseClass.IsConnect())
-            {
-                MessageBox.Show("Соединение c БД установлено.", "Соединение!", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            else
-            {
-                MessageBox.Show("Ошибка подключения к базе данных!", "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-        /// <summary>
-        /// запрет на ввод не подходящих символов для textBox(2,3)
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void TextBox3_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (Char.IsNumber(e.KeyChar) || e.KeyChar == 8 || e.KeyChar == ',')
+            if (Char.IsNumber(n.KeyChar) || n.KeyChar == 8 || n.KeyChar == ',')
             {
                 return;
             }
-            e.Handled = true;
+            n.Handled = true;
         }
         private void ComboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            List<List<string>> dataOrder3;
-            dataOrder3 = DataBaseClass.SelectMicrocontrollersData(comboBox1.Text);
-            numericUpDown2.Value = Convert.ToDecimal(dataOrder3[0][1]);
-            textBox4.Text = dataOrder3[0][2];
-            dataOrder3.Clear();
+            List<List<string>> MassTemp;
+            MassTemp = DataBaseClass.SelectMicrocontrollersData(comboBox1.Text);
+            numericUpDown2.Value = Convert.ToDecimal(MassTemp[0][1]);
+            textBox4.Text = MassTemp[0][2];
+            MassTemp.Clear();
         }
 
-        
     }
 }
