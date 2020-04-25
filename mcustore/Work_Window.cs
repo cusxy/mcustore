@@ -16,8 +16,14 @@ namespace mcustore
         {
             InitializeComponent();
         }
-        List<List<string>> dataOrder;
-        List<List<string>> dataOrder2;
+        List<List<string>> dataOrder;//массив с данными запроса к первой таблице
+        List<List<string>> dataOrder2;//массив с данными запроса к второй таблице
+        List<List<string>> dataGrid3;//массив с данными третий таблицы
+        /// <summary>
+        /// закгрузка формы
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Work_Window_Load(object sender, EventArgs e)
         {
             datagGridPush(sender, e);
@@ -82,6 +88,11 @@ namespace mcustore
                 MessageBox.Show("Ошибка подключения к базе данных!", "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+        /// <summary>
+        /// изменение размеров формы
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Work_Window_Resize(object sender, EventArgs e)
         {
             tabControl1.Width = this.Width;
@@ -146,7 +157,9 @@ namespace mcustore
             button8.Location = button1.Location;
             button9.Location = button2.Location;
         }
-
+        /// <summary>
+        /// заполнение checkListBox1 данными из массива
+        /// </summary>
         private void checkListBox()
         {
             for (int i = 0; i < dataOrder2.Count; i++)
@@ -154,7 +167,9 @@ namespace mcustore
                  checkedListBox1.Items.Add(dataOrder2[i][0],false);
             }
         }
-        List<List<string>> dataGrid3;
+        /// <summary>
+        /// заполнение данными из массива третьей таблицы
+        /// </summary>
         private void dataGridFunction()
         {
             dataGrid3 = new List<List<string>>();
@@ -167,6 +182,9 @@ namespace mcustore
                 dataGrid3[i].Add(dataOrder2[i][2]);
             }
         }
+        /// <summary>
+        /// поиск выделенных элементов в checkListBox
+        /// </summary>
         private void ItemCheck2()
         {
            for(int i=0;i<checkedListBox1.Items.Count;i++)
@@ -201,6 +219,9 @@ namespace mcustore
             }
             price();
         }
+        /// <summary>
+        /// подсчет общей стоимости заказа
+        /// </summary>
         private void price()
         {
             int price = 0;
@@ -301,7 +322,11 @@ namespace mcustore
                 }
             }
         }
-
+        /// <summary>
+        /// обработка кликов по разным кнопкам на форме
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Button1_Click(object sender, EventArgs e)
         {
             textBox1.Text = "";
@@ -314,7 +339,6 @@ namespace mcustore
             dataGrid3.Clear();
             dataGridFunction();
         }
-
         private void Button2_Click(object sender, EventArgs e)
         {
             if(textBox1.Text!="" && label3.Text!="" && label3.Text!="Стоимость заказа 0$")
@@ -345,7 +369,6 @@ namespace mcustore
                 }
             }
         }
-
         private void Button3_Click(object sender, EventArgs e)
         {
             if(textBox2.Text!=""&&textBox3.Text!="")
@@ -360,16 +383,6 @@ namespace mcustore
                 MessageBox.Show("Не все данные указаны!", "Данные!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
-        private void TextBox3_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (Char.IsNumber(e.KeyChar) || e.KeyChar == 8 || e.KeyChar==',')
-            {
-                return;
-            }
-            e.Handled = true;
-        }
-
         private void Button4_Click(object sender, EventArgs e)
         {
             if (comboBox1.Text != "" && textBox4.Text != "")
@@ -382,7 +395,6 @@ namespace mcustore
                 MessageBox.Show("Не все данные указаны!", "Данные!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
         private void Button5_Click(object sender, EventArgs e)
         {
             if (comboBox2.Text != "" )
@@ -408,74 +420,20 @@ namespace mcustore
                 MessageBox.Show("Не все данные указаны!", "Данные!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
         private void Button7_Click(object sender, EventArgs e)
         {
             Work_Window_Load(sender, e);
         }
-
-        private void Work_Window_Shown(object sender, EventArgs e)
+        private void Button8_Click(object sender, EventArgs e)
         {
-            Work_Window_Resize(sender, e);
-            dataGridView1.ColumnCount = 5;
-            dataGridView1.Columns[0].Name = "Номер заказа";
-            dataGridView1.Columns[1].Name = "Компания";
-            dataGridView1.Columns[2].Name = "Модели микроконтроллеров (шт.)";
-            dataGridView1.Columns[3].Name = "Цена ($)";
-            dataGridView1.Columns[4].Name = "Дата";
-
-            dataGridView2.ColumnCount = 3;
-            dataGridView2.Columns[0].Name = "Модель микроконтроллера";
-            dataGridView2.Columns[1].Name = "Количество";
-            dataGridView2.Columns[2].Name = "Цена за шт./$";
-
-            dataGridView3.ColumnCount = 3;
-            dataGridView3.Columns[0].Name = "Модель";
-            dataGridView3.Columns[1].Name = "Количество";
-            dataGridView3.Columns[2].Name = "Цена ($)";
-            if (DataBaseClass.IsConnect())
-            {
-                MessageBox.Show("Соединение c БД установлено.", "Соединение!", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                dataOrder = DataBaseClass.SelectOrdersData();
-                dataGridView1.Rows.Clear();
-                dataGridView2.Rows.Clear();
-                comboBox1.Items.Clear();
-                comboBox2.Items.Clear();
-                for (int i = 0; i < dataOrder.Count; i++)
-                {
-                    dataGridView1.Rows.Add();
-                    for (int j = 0; j < dataOrder[i].Count; j++)
-                    {
-                        dataGridView1.Rows[i].Cells[j].Value = dataOrder[i][j];
-                    }
-                }
-                dataOrder2 = DataBaseClass.SelectMicrocontrollersData();
-                for (int i = 0; i < dataOrder2.Count; i++)
-                {
-                    dataGridView2.Rows.Add();
-                    for (int j = 0; j < dataOrder2[i].Count; j++)
-                    {
-                        dataGridView2.Rows[i].Cells[j].Value = dataOrder2[i][j];
-
-                    }
-                    comboBox1.Items.Add(dataOrder2[i][0]);
-                    comboBox2.Items.Add(dataOrder2[i][0]);
-                }
-                checkedListBox1.Items.Clear();
-                checkListBox();
-                dataGridFunction();
-            }
-            else
-            {
-                MessageBox.Show("Ошибка подключения к базе данных!", "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            Work_Window_Load(sender, e);
+            dateTimePicker2.Value = DateTime.Now;
         }
-
         private void Button9_Click(object sender, EventArgs e)
         {
             string data1 = Convert.ToString(dateTimePicker1.Value.Year) + "-" + Convert.ToString(dateTimePicker1.Value.Month) + "-" + Convert.ToString(dateTimePicker1.Value.Day);
             string data2 = Convert.ToString(dateTimePicker2.Value.Year) + "-" + Convert.ToString(dateTimePicker2.Value.Month) + "-" + Convert.ToString(dateTimePicker2.Value.Day);
-            
+
             List<List<string>> dataOrder3;
             dataGridView1.ColumnCount = 5;
             dataGridView1.Columns[0].Name = "Номер заказа";
@@ -484,7 +442,7 @@ namespace mcustore
             dataGridView1.Columns[3].Name = "Цена ($)";
             dataGridView1.Columns[4].Name = "Дата";
             dataGridView1.Rows.Clear();
-            dataOrder3 = DataBaseClass.SelectOrdersData(data1,data2);
+            dataOrder3 = DataBaseClass.SelectOrdersData(data1, data2);
             for (int i = 0; i < dataOrder3.Count; i++)
             {
                 dataGridView1.Rows.Add();
@@ -495,7 +453,36 @@ namespace mcustore
             }
 
         }
-
+        /// <summary>
+        /// первая закгрузка формы и проверка соединения с БД
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Work_Window_Shown(object sender, EventArgs e)
+        {
+            Work_Window_Resize(sender, e);
+            if (DataBaseClass.IsConnect())
+            {
+                MessageBox.Show("Соединение c БД установлено.", "Соединение!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                MessageBox.Show("Ошибка подключения к базе данных!", "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        /// <summary>
+        /// запрет на ввод не подходящих символов для textBox(2,3)
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TextBox3_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (Char.IsNumber(e.KeyChar) || e.KeyChar == 8 || e.KeyChar == ',')
+            {
+                return;
+            }
+            e.Handled = true;
+        }
         private void ComboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             List<List<string>> dataOrder3;
@@ -505,10 +492,6 @@ namespace mcustore
             dataOrder3.Clear();
         }
 
-        private void Button8_Click(object sender, EventArgs e)
-        {
-            Work_Window_Load(sender, e);
-            dateTimePicker2.Value = DateTime.Now;
-        }
+        
     }
 }
