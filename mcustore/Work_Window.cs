@@ -135,6 +135,14 @@ namespace mcustore
             button5.Location = new Point(comboBox1.Location.X, button3.Location.Y);
             button7.Location = new Point(checkedListBox1.Location.X, button3.Location.Y);
             button6.Location = new Point(comboBox1.Location.X, button3.Location.Y);
+            label11.Location = label1.Location;
+            label12.Location = checkedListBox1.Location;
+            dateTimePicker1.Location = textBox1.Location;
+            dateTimePicker2.Location = new Point(textBox1.Location.X, dataGridView3.Location.Y);
+            dateTimePicker1.Width = dateTimePicker2.Width = textBox1.Width;
+            button9.Width = button8.Width = button1.Width;
+            button8.Location = button1.Location;
+            button9.Location = button2.Location;
         }
 
         private void checkListBox()
@@ -401,7 +409,7 @@ namespace mcustore
         {
             if (comboBox3.Text != "")
             {
-                DataBaseClass.DeleteMicrocontroller(comboBox3.Text);
+                //DataBaseClass.DeleteMicrocontroller(comboBox3.Text);
                 Work_Window_Load(sender, e);
             }
             else
@@ -472,6 +480,20 @@ namespace mcustore
             {
                 MessageBox.Show("Ошибка подключения к базе данных!", "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void Button9_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ComboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            List<List<string>> dataOrder3;
+            dataOrder3 = DataBaseClass.SelectMicrocontrollersData(comboBox1.Text);
+            numericUpDown2.Value = Convert.ToDecimal(dataOrder3[0][1]);
+            textBox4.Text = dataOrder3[0][2];
+            dataOrder3.Clear();
         }
     }
 }
