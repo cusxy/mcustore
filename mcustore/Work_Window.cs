@@ -503,5 +503,10 @@ namespace mcustore
             MassTemp.Clear();
         }
 
+        private void Work_Window_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            this.Owner.Close();
+        }
+
     }
 }
