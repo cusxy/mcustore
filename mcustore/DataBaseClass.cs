@@ -74,7 +74,7 @@ namespace mcustore
         {
             // ID заказа - Название компании - Микроконтроллеры - Общая цена - Дата заказа
 
-            string sql = "SELECT Order_id, Company_name, Datetime FROM Orders WHERE (Datetime >= '" + date_from + "') AND (Datetime <= '" + date_to + "');";
+            string sql = "SELECT Order_id, Company_name, Datetime FROM Orders WHERE (Datetime >= '" + date_from + "') AND (Datetime <= '" + date_to + " 23:59:59');";
             List<List<string>> orders_list = ReadDataToMass(sql);
             if (orders_list == null) return null; // в случае ошибки
 
