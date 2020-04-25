@@ -31,17 +31,21 @@ namespace mcustore
             dataGridView2.ColumnCount = 3;
             dataGridView2.Columns[0].Name = "Модель микроконтроллера";
             dataGridView2.Columns[1].Name = "Количество";
-            dataGridView2.Columns[2].Name = "Цена за шт.";
+            dataGridView2.Columns[2].Name = "Цена за шт./$";
 
             dataGridView3.ColumnCount = 3;
             dataGridView3.Columns[0].Name = "Модель";
             dataGridView3.Columns[1].Name = "Количество";
-            dataGridView3.Columns[2].Name = "Цена";
+            dataGridView3.Columns[2].Name = "Цена ($)";
             if (DataBaseClass.IsConnect())
             {
-                MessageBox.Show("Соединение c БД установлено.", "Соединение!", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 dataOrder = DataBaseClass.SelectOrdersData();
-                for(int i = 0;i<dataOrder.Count;i++)
+                dataGridView1.Rows.Clear();
+                dataGridView2.Rows.Clear();
+                comboBox1.Items.Clear();
+                comboBox2.Items.Clear();
+                comboBox3.Items.Clear();
+                for (int i = 0;i<dataOrder.Count;i++)
                 {
                     dataGridView1.Rows.Add();
                     for (int j=0;j<dataOrder[i].Count;j++)
@@ -55,10 +59,16 @@ namespace mcustore
                     dataGridView2.Rows.Add();
                     for (int j = 0; j < dataOrder2[i].Count; j++)
                     {
-                        dataGridView2.Rows[i].Cells[j].Value = dataOrder2[i][j];
+                         dataGridView2.Rows[i].Cells[j].Value = dataOrder2[i][j];
+                         
                     }
+                    comboBox1.Items.Add(dataOrder2[i][0]);
+                    comboBox2.Items.Add(dataOrder2[i][0]);
+                    comboBox3.Items.Add(dataOrder2[i][0]);
                 }
+                checkedListBox1.Items.Clear();
                 checkListBox();
+                dataGridFunction();
             }
             else
             {
@@ -73,10 +83,58 @@ namespace mcustore
             dataGridView1.Width = dataGridView2.Width = tabControl1.Width - 20;
             dataGridView1.Height = dataGridView2.Height = tabControl1.Height / 3;
             groupBox1.Width = groupBox2.Width = tabControl1.Width / 2 - 16;
-            groupBox1.Location = new Point(0, tabControl1.Height / 3);
-            groupBox2.Location = new Point(groupBox1.Width+5, tabControl1.Height / 3);
-            groupBox1.Height = groupBox2.Height = tabControl1.Height - tabControl1.Height/3;
-            
+            groupBox1.Height = groupBox2.Height = tabControl1.Height - tabControl1.Height/3 - 105;
+            groupBox1.Location = new Point(2, tabControl1.Height / 3 + 15);
+            groupBox2.Location = new Point(groupBox1.Width + 6, tabControl1.Height / 3 + 15);
+            int heig_margin_tabpage1 = groupBox1.Height/10;
+            int width_margin_tabpage1 = 8;
+            int width_padding_tabpage1 = 30;
+            textBox1.Width = groupBox1.Width - label1.Width - width_margin_tabpage1- width_padding_tabpage1*2;
+            label1.Location = new Point(dataGridView1.Location.X+ width_margin_tabpage1, dataGridView1.Location.Y + heig_margin_tabpage1);
+            label1.Location = new Point(dataGridView1.Location.X+ width_margin_tabpage1, dataGridView1.Location.Y + heig_margin_tabpage1);
+            textBox1.Location = new Point(dataGridView1.Location.X + width_padding_tabpage1*2 + label1.Width+width_margin_tabpage1, dataGridView1.Location.Y + heig_margin_tabpage1-textBox1.Height/3);
+            label2.Location = new Point(label1.Location.X, label1.Location.Y + heig_margin_tabpage1);
+            dataGridView3.Height = checkedListBox1.Height;
+            checkedListBox1.Width =groupBox1.Width / 3;
+            dataGridView3.Width = groupBox1.Width - checkedListBox1.Width  -width_margin_tabpage1 - width_padding_tabpage1 ;
+            checkedListBox1.Location = new Point(label1.Location.X, label2.Location.Y + heig_margin_tabpage1);
+            dataGridView3.Location = new Point(checkedListBox1.Location.X + width_padding_tabpage1  +  checkedListBox1.Width, checkedListBox1.Location.Y);
+            label3.Location = new Point(label1.Location.X, checkedListBox1.Location.Y + heig_margin_tabpage1 + checkedListBox1.Height);
+            button1.Location = new Point(label1.Location.X, label3.Location.Y + heig_margin_tabpage1);
+            button2.Location = new Point(button1.Location.X + groupBox1.Width - button2.Width - width_margin_tabpage1, label3.Location.Y + heig_margin_tabpage1);
+
+            groupBox3.Width = groupBox4.Width = groupBox5.Width = groupBox6.Width = tabControl1.Width / 2 - 16;
+            groupBox3.Height = groupBox4.Height = groupBox5.Height = groupBox6.Height = tabControl1.Height / 4;
+            groupBox3.Location = new Point(2, tabControl1.Height / 3 + 15);
+            groupBox4.Location = new Point(groupBox3.Width + 6, tabControl1.Height / 3 + 15);
+            groupBox5.Location = new Point(2, tabControl1.Height / 3 + tabControl1.Height / 4 + 30);
+            groupBox6.Location = new Point(groupBox3.Width + 6, tabControl1.Height / 3+ tabControl1.Height / 4 + 30);
+            label4.Location = label1.Location;
+            label5.Location = new Point(checkedListBox1.Location.X, label2.Location.Y + label5.Height/2);
+            textBox2.Location = new Point(textBox1.Location.X + label4.Width, textBox1.Location.Y);
+            numericUpDown1.Location = new Point(textBox2.Location.X, label2.Location.Y);
+            comboBox1.Width =textBox2.Width = textBox1.Width - label4.Width;
+            button3.Width = textBox2.Width;
+            button3.Location = new Point(textBox2.Location.X, checkedListBox1.Location.Y);
+            label6.Location = new Point(checkedListBox1.Location.X, checkedListBox1.Location.Y+label6.Height);
+            textBox3.Width = label6.Width;
+            textBox3.Height = label6.Height;
+            textBox3.Location = new Point(button3.Location.X - textBox3.Width*2 + textBox3.Width/2, label6.Location.Y - label6.Height/3);
+            label8.Location = new Point(label5.Location.X,label4.Location.Y);
+            label7.Location = new Point(label6.Location.X, label5.Location.Y );
+            textBox4.Width = textBox3.Width;
+            numericUpDown2.Location = new Point(textBox3.Location.X, textBox2.Location.Y);
+            textBox4.Location = new Point(textBox3.Location.X, numericUpDown1.Location.Y);
+            button5.Width = button6.Width = button4.Width = comboBox1.Width;
+            button4.Location = new Point(comboBox1.Location.X, button3.Location.Y);
+            label9.Location = label1.Location;
+            label10.Location = label1.Location;
+            comboBox2.Width = comboBox3.Width = textBox2.Width;
+            comboBox2.Location = textBox2.Location;
+            comboBox3.Location = textBox2.Location;
+            button5.Location = new Point(comboBox1.Location.X, button3.Location.Y);
+            button7.Location = new Point(checkedListBox1.Location.X, button3.Location.Y);
+            button6.Location = new Point(comboBox1.Location.X, button3.Location.Y);
         }
 
         private void checkListBox()
@@ -86,113 +144,50 @@ namespace mcustore
                  checkedListBox1.Items.Add(dataOrder2[i][0],false);
             }
         }
-        //private int[] ItemCheck1()
-        //{
-        //    int i = 0;
-        //    foreach (int indexChecked in checkedListBox1.CheckedIndices)
-        //    {
-        //        i++;
-        //    }
-        //    int[] mass = new int[i];
-        //    i = 0;
-        //    foreach (object itemChecked in checkedListBox1.CheckedItems)
-        //    {
-        //        mass[i] = Convert.ToInt32(itemChecked);
-        //        i++;
-        //    }
-        //    return mass;
-        //}
-        int[] array;
-        string[] mass;
-        private string[] ItemCheck2()
+        List<List<string>> dataGrid3;
+        private void dataGridFunction()
         {
-            if(mass==null && array==null)
+            dataGrid3 = new List<List<string>>();
+            for (int i=0;i< dataOrder2.Count; i++)
             {
-                int i = 0;
-                foreach (int indexChecked in checkedListBox1.CheckedIndices)
-                {
-                    i++;
-                }
-                mass = new string[i];
-                array = new int[i];
-                i = 0;
-                foreach (object itemChecked in checkedListBox1.CheckedItems)
-                {
-                    array[i] = 0;
-                    mass[i] = itemChecked.ToString();
-                    i++;
-                }
+                dataGrid3.Add(new List<string>());
+                dataGrid3[i].Add("false");
+                dataGrid3[i].Add(dataOrder2[i][0]);
+                dataGrid3[i].Add("0");
+                dataGrid3[i].Add(dataOrder2[i][2]);
             }
-            else
-            {
-                int i = 0;
-                foreach (int indexChecked in checkedListBox1.CheckedIndices)
+        }
+        private void ItemCheck2()
+        {
+           for(int i=0;i<checkedListBox1.Items.Count;i++)
+           {
+                if(checkedListBox1.GetItemChecked(i) && dataGrid3[i][1]==checkedListBox1.GetItemText(checkedListBox1.Items[i]))
                 {
-                    i++;
-                }
-                string[] mas = mass;
-                int[] arr = array;
-                mass = new string[i];
-                array = new int[i];
-                i = 0;
-                foreach (object itemChecked in checkedListBox1.CheckedItems)
-                {
-                    array[i] = 0;
-                    mass[i] = itemChecked.ToString();
-                    i++;
-                }
-                if (array.Count() > arr.Count())
-                {
-                    for(int i1=0;i1< array.Count();i1++)
-                    {
-                        try
-                        {
-                            array[i1] = arr[i1];
-                        }
-                        catch
-                        {
-                            array[i1] = 0;
-                        }
-                    }
+                    dataGrid3[i][0] = "true";
                 }
                 else
                 {
-                    for (int i1 = 0; i1 < mass.Count(); i1++)
-                    {
-                        try
-                        {
-                            if (mass[i1]!=mas[i1])
-                            {
-                               if(i1!=mas.Count()&& arr[i1]!=0)
-                                {
-                                    array[i1] = arr[i1 + 1];
-                                }
-                            }
-                            else
-                            {
-                                array[i1] = arr[i1];
-                            }
-                        }
-                        catch
-                        {
-                            array[i1] = 0;
-                        }
-                    }
+                    dataGrid3[i][0] = "false";
+                    dataGrid3[i][1] = dataOrder2[i][0];
+                    dataGrid3[i][2]="0";
                 }
             }
-            return mass;
         }
-
+        
         private void CheckedListBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            ItemCheck2();
             dataGridView3.Rows.Clear();
-            mass = ItemCheck2();
-            for (int i = 0; i < mass.Count(); i++)
+            int j = 0;
+            for (int i = 0; i < dataGrid3.Count; i++)
             {
-                dataGridView3.Rows.Add();
-                dataGridView3.Rows[i].Cells[0].Value = mass[i];
-                dataGridView3.Rows[i].Cells[1].Value = array[i];
+                if(dataGrid3[i][0]=="true")
+                {
+                    dataGridView3.Rows.Add();
+                    dataGridView3.Rows[j].Cells[0].Value = dataGrid3[i][1];
+                    dataGridView3.Rows[j].Cells[1].Value = dataGrid3[i][2];
+                    j++;
+                }
             }
             price();
         }
@@ -207,36 +202,81 @@ namespace mcustore
         }
         private void DataGridView3_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-            if(e.ColumnIndex == 0)
+            if (e.ColumnIndex == 0)
             {
-                dataGridView3.Rows[e.RowIndex].Cells[0].Value = mass[e.RowIndex];
+                int j = 0;
+                for (int i = 0; i < dataOrder2.Count; i++)
+                {
+                    if(dataGrid3[i][0]=="true")
+                    {
+                        if(j==e.RowIndex)
+                        {
+                            dataGridView3.Rows[e.RowIndex].Cells[0].Value = dataGrid3[i][1];
+                        }
+                        j++;
+                    }
+                }
             }
-            if(e.ColumnIndex==1)
+            if (e.ColumnIndex == 1)
             {
+                int temp = 0;
                 try
                 {
-                    array[e.RowIndex] = Convert.ToInt32(dataGridView3.Rows[e.RowIndex].Cells[1].Value);
-                    for (int i = 0; i < dataOrder2.Count; i++)
+                    temp = Convert.ToInt32(dataGridView3.Rows[e.RowIndex].Cells[1].Value);
+                    for(int i=0;i<dataGrid3.Count;i++)
                     {
-                        if (dataGridView3.Rows[e.RowIndex].Cells[0].Value == dataOrder2[i][0])
+                        if(dataGrid3[i][1]== dataGridView3.Rows[e.RowIndex].Cells[0].Value.ToString())
                         {
-                            dataGridView3.Rows[e.RowIndex].Cells[2].Value = array[e.RowIndex] * Convert.ToDouble(dataOrder2[i][2]);
-                            break;
+                            if (temp > Convert.ToInt32(dataOrder2[i][1]))
+                            {
+                                MessageBox.Show("Такого количество микроконтроллеров модели " + dataGridView3.Rows[e.RowIndex].Cells[0].Value.ToString() + " нет");
+                                temp = 0;
+                            }
+                            else
+                            {
+                                dataGrid3[i][2] = temp.ToString();
+                                dataGridView3.Rows[e.RowIndex].Cells[2].Value = Convert.ToDouble(dataGrid3[i][3]) * Convert.ToInt32(dataGrid3[i][2]);
+                            }
+                        }
+                    }
+                    if(temp==0)
+                    {
+                        for (int i = 0; i < dataGrid3.Count; i++)
+                        {
+                            if (dataGrid3[i][1] == dataGridView3.Rows[e.RowIndex].Cells[0].Value.ToString())
+                            {
+                                dataGrid3[i][2] = "1";
+                                dataGridView3.Rows[e.RowIndex].Cells[1].Value = 1;
+                            }
                         }
                     }
                 }
                 catch
                 {
                     MessageBox.Show("Буквы нельзя вводить!");
-                    dataGridView3.Rows[e.RowIndex].Cells[1].Value = array[e.RowIndex];
+                    for (int i = 0; i < dataGrid3.Count; i++)
+                    {
+                        if (dataGrid3[i][1] == dataGridView3.Rows[e.RowIndex].Cells[0].Value.ToString())
+                        {
+                            dataGridView3.Rows[e.RowIndex].Cells[1].Value = dataGrid3[i][2];
+                        }
+                    }
                 }
                 price();
             }
-            if(e.ColumnIndex == 2)
+            if (e.ColumnIndex == 2)
             {
                 try
                 {
                     Convert.ToInt32(dataGridView3.Rows[e.RowIndex].Cells[2].Value);
+                    for (int i = 0; i < dataOrder2.Count; i++)
+                    {
+                        if (dataGridView3.Rows[e.RowIndex].Cells[0].Value == dataOrder2[i][0])
+                        {
+                            dataGridView3.Rows[e.RowIndex].Cells[2].Value = Convert.ToInt32(dataGrid3[i][2]) * Convert.ToDouble(dataOrder2[i][2]);
+                            break;
+                        }
+                    }
                 }
                 catch
                 {
@@ -244,7 +284,7 @@ namespace mcustore
                     {
                         if (dataGridView3.Rows[e.RowIndex].Cells[0].Value == dataOrder2[i][0])
                         {
-                            dataGridView3.Rows[e.RowIndex].Cells[2].Value = array[e.RowIndex] * Convert.ToDouble(dataOrder2[i][2]);
+                            dataGridView3.Rows[e.RowIndex].Cells[2].Value = Convert.ToInt32(dataGrid3[i][2]) * Convert.ToDouble(dataOrder2[i][2]);
                             break;
                         }
                     }
@@ -261,11 +301,177 @@ namespace mcustore
             }
             dataGridView3.Rows.Clear();
             label3.Text = "";
+            dataGrid3.Clear();
+            dataGridFunction();
         }
 
         private void Button2_Click(object sender, EventArgs e)
         {
-            DataBaseClass.CreateNewOrder(textBox1.Text, mass.ToList(), array.ToList());
+            if(textBox1.Text!="" && label3.Text!="" && label3.Text!="Стоимость заказа 0$")
+            {
+                string[] mass = new string[dataGrid3.Count];
+                int[] array = new int[dataGrid3.Count];
+                for (int i = 0; i < dataGrid3.Count; i++)
+                {
+                    if (dataGrid3[i][0] == "true")
+                    {
+                        mass[i] = dataGrid3[i][1];
+                        array[i] = Convert.ToInt32(dataGrid3[i][2]);
+                    }
+                }
+                DataBaseClass.CreateNewOrder(textBox1.Text, mass.ToList(), array.ToList());
+                Work_Window_Load(sender, e);
+                Button1_Click(sender, e);
+            }
+            else
+            {
+                if(textBox1.Text=="")
+                {
+                    MessageBox.Show("Укажите предприятие!", "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    MessageBox.Show("Пустой заказ!", "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void Button3_Click(object sender, EventArgs e)
+        {
+            if(textBox2.Text!=""&&textBox3.Text!="")
+            {
+                DataBaseClass.CreateNewMicrocontroller(textBox2.Text, Convert.ToInt32(numericUpDown1.Value), Convert.ToDouble(textBox3.Text));
+                Work_Window_Load(sender, e);
+            }
+            else
+            {
+                MessageBox.Show("Не все данные указаны!", "Данные!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void TextBox3_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (Char.IsNumber(e.KeyChar) || e.KeyChar == 8 || e.KeyChar==',')
+            {
+                return;
+            }
+            e.Handled = true;
+        }
+
+        private void Button4_Click(object sender, EventArgs e)
+        {
+            if (comboBox1.Text != "" && textBox4.Text != "")
+            {
+                DataBaseClass.EditMicrocontroller(comboBox1.Text, comboBox1.Text, Convert.ToInt32(numericUpDown2.Value), Convert.ToDouble(textBox4.Text));
+                Work_Window_Load(sender, e);
+            }
+            else
+            {
+                MessageBox.Show("Не все данные указаны!", "Данные!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void Button5_Click(object sender, EventArgs e)
+        {
+            if (comboBox2.Text != "" )
+            {
+                List<List<string>> dataOrder3;
+                dataGridView2.ColumnCount = 3;
+                dataGridView2.Columns[0].Name = "Модель микроконтроллера";
+                dataGridView2.Columns[1].Name = "Количество";
+                dataGridView2.Columns[2].Name = "Цена за шт./$";
+                dataGridView2.Rows.Clear();
+                dataOrder3 = DataBaseClass.SelectMicrocontrollersData(comboBox2.Text);
+                for (int i = 0; i < dataOrder3.Count; i++)
+                {
+                    dataGridView2.Rows.Add();
+                    for (int j = 0; j < dataOrder3[i].Count; j++)
+                    {
+                        dataGridView2.Rows[i].Cells[j].Value = dataOrder3[i][j];
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Не все данные указаны!", "Данные!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void Button6_Click(object sender, EventArgs e)
+        {
+            if (comboBox3.Text != "")
+            {
+                DataBaseClass.DeleteMicrocontroller(comboBox3.Text);
+                Work_Window_Load(sender, e);
+            }
+            else
+            {
+                MessageBox.Show("Не все данные указаны!", "Данные!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void Button7_Click(object sender, EventArgs e)
+        {
+            Work_Window_Load(sender, e);
+        }
+
+        private void Work_Window_Shown(object sender, EventArgs e)
+        {
+            Work_Window_Resize(sender, e);
+            dataGridView1.ColumnCount = 5;
+            dataGridView1.Columns[0].Name = "Номер заказа";
+            dataGridView1.Columns[1].Name = "Компания";
+            dataGridView1.Columns[2].Name = "Модели микроконтроллеров (шт.)";
+            dataGridView1.Columns[3].Name = "Цена ($)";
+            dataGridView1.Columns[4].Name = "Дата";
+
+            dataGridView2.ColumnCount = 3;
+            dataGridView2.Columns[0].Name = "Модель микроконтроллера";
+            dataGridView2.Columns[1].Name = "Количество";
+            dataGridView2.Columns[2].Name = "Цена за шт./$";
+
+            dataGridView3.ColumnCount = 3;
+            dataGridView3.Columns[0].Name = "Модель";
+            dataGridView3.Columns[1].Name = "Количество";
+            dataGridView3.Columns[2].Name = "Цена ($)";
+            if (DataBaseClass.IsConnect())
+            {
+                MessageBox.Show("Соединение c БД установлено.", "Соединение!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                dataOrder = DataBaseClass.SelectOrdersData();
+                dataGridView1.Rows.Clear();
+                dataGridView2.Rows.Clear();
+                comboBox1.Items.Clear();
+                comboBox2.Items.Clear();
+                comboBox3.Items.Clear();
+                for (int i = 0; i < dataOrder.Count; i++)
+                {
+                    dataGridView1.Rows.Add();
+                    for (int j = 0; j < dataOrder[i].Count; j++)
+                    {
+                        dataGridView1.Rows[i].Cells[j].Value = dataOrder[i][j];
+                    }
+                }
+                dataOrder2 = DataBaseClass.SelectMicrocontrollersData();
+                for (int i = 0; i < dataOrder2.Count; i++)
+                {
+                    dataGridView2.Rows.Add();
+                    for (int j = 0; j < dataOrder2[i].Count; j++)
+                    {
+                        dataGridView2.Rows[i].Cells[j].Value = dataOrder2[i][j];
+
+                    }
+                    comboBox1.Items.Add(dataOrder2[i][0]);
+                    comboBox2.Items.Add(dataOrder2[i][0]);
+                    comboBox3.Items.Add(dataOrder2[i][0]);
+                }
+                checkedListBox1.Items.Clear();
+                checkListBox();
+                dataGridFunction();
+            }
+            else
+            {
+                MessageBox.Show("Ошибка подключения к базе данных!", "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }
