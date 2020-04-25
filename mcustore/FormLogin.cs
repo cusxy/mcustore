@@ -25,6 +25,7 @@ namespace mcustore
                 form.Owner = this;
                 this.Hide();
                 form.ShowDialog();
+                this.Close();
             }
             else {
                 MessageBox.Show("Неверный пароль!", "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);

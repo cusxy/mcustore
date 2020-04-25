@@ -663,7 +663,6 @@
             this.MinimumSize = new System.Drawing.Size(1064, 656);
             this.Name = "Work_Window";
             this.Text = "БД \"Заказ микроконтроллеров\"";
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Work_Window_FormClosed);
             this.Load += new System.EventHandler(this.Work_Window_Load);
             this.Resize += new System.EventHandler(this.Work_Window_Resize);
             this.tabPage2.ResumeLayout(false);

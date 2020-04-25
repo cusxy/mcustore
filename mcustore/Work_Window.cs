@@ -502,11 +502,5 @@ namespace mcustore
             textBox4.Text = MassTemp[0][2];
             MassTemp.Clear();
         }
-
-        private void Work_Window_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            this.Owner.Close();
-        }
-
     }
 }
