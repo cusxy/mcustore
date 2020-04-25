@@ -171,21 +171,6 @@ namespace mcustore
             return Convert.ToInt32(info[0][0]);
         }
 
-        /// <summary>Добавляет указанное количество выбранного микроконтроллера на склад</summary>
-        /// <param name="name">Название микроконтроллера (должно быть в БД)</param>
-        /// <param name="plus">Количество, которое прибавить</param>
-        /// <returns>1 - в случае успешного добавления, 0 - в случае, если запрос был отклонён БД, -1 - в случае ошибки, -2 - если МК не найден</returns>
-        public static int PlusQuantity(string name, int plus)
-        {
-            string sql = "SELECT Quantity FROM Microcontrollers WHERE Microcontroller_name = N'" + name + "';";
-            List<List<string>> info = ReadDataToMass(sql);
-            if (info.Count == 0) return -2; // если МК не найден 
-            if (info == null) return -1; // в случае ошибки
-
-            string sql2 = "EXECUTE AddMicrocontrollers " + GetMicrocontrollerIdFromName(name) + ", " + plus + ";"; // выполнение хранимой процедуры AddMicrocontrollers
-            return GoQuery(sql2);
-        }
-
         /// <summary>Изменяет информацию об указанном микроконтроллере</summary>
         /// <param name="name">Название микроконтроллера</param>
         /// <param name="new_name">Новое название</param>
@@ -197,20 +182,8 @@ namespace mcustore
             int mc_id = GetMicrocontrollerIdFromName(name);
             if (mc_id < 0) return mc_id; // в случае ошибки или отсутствия такого микроконтроллера
 
-            string sql2 = "UPDATE Microcontrollers SET Microcontroller_name = N'" + new_name + "', Quantity = " + new_quantity + ", Price = " + new_price.ToString(System.Globalization.CultureInfo.InvariantCulture) + " WHERE Microcontroller_name = " + name + ";";
-            return GoQuery(sql2);
-        }
-
-        /// <summary>Удаляет микроконтроллер</summary>
-        /// <param name="name">Название микроконтроллера</param>
-        /// <returns>1 - в случае успешного удаления, 0 - в случае, если запрос отклонён БД, -1 - в случае ошибки, -2 - если МК не найден</returns>
-        public static int DeleteMicrocontroller(string name)
-        {
-            int mc_id = GetMicrocontrollerIdFromName(name);
-            if (mc_id < 0) return mc_id; // в случае ошибки или отсутствия такого микроконтроллера
-
-            string sql2 = "DELETE FROM Microcontrollers WHERE Microcontroller_name = N'" + name + "';";
-            return GoQuery(sql2);
+            string sql = "UPDATE Microcontrollers SET Microcontroller_name = N'" + new_name + "', Quantity = " + new_quantity + ", Price = " + new_price.ToString(System.Globalization.CultureInfo.InvariantCulture) + " WHERE Microcontroller_id = " + mc_id + ";";
+            return GoQuery(sql);
         }
 
         /// <summary>Создаёт новый заказ</summary>
