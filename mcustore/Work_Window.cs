@@ -33,7 +33,7 @@ namespace mcustore
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void datagGridPush(object sender, EventArgs e)
+        private void datagGridCreate(object sender, EventArgs e)
         {
             Work_Window_Resize(sender, e);
             dataGridView1.ColumnCount = 5;
