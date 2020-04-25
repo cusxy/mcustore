@@ -26,7 +26,7 @@ namespace mcustore
         /// <param name="e"></param>
         private void Work_Window_Load(object sender, EventArgs e)
         {
-            datagGridPush(sender, e);
+            datagGridCreate(sender, e);
         }
         /// <summary>
         /// Функция заполнения dataGridView
