@@ -132,7 +132,7 @@ namespace mcustore
 
                 SqlCommand sqlCommand = new SqlCommand(query, sqlConnection); // создание SQL команды с указанным запросом
                 SqlDataReader reader = sqlCommand.ExecuteReader(); // выполнение SQL команды
-                if (reader.HasRows)
+                if (reader.RecordsAffected != 0)
                 {
                     reader.Close();
                     sqlConnection.Close(); // закрываем соединение с БД
