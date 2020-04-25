@@ -235,11 +235,14 @@ namespace mcustore
             int order_id = Convert.ToInt32(info[info.Count - 1][0]);
 
             for (int i = 0; i < microcontrollers_names.Count; i++) {
-                int microcontroller_id = GetMicrocontrollerIdFromName(microcontrollers_names[i]);
+                if (microcontrollers_names[i] != null)
+                {
+                    int microcontroller_id = GetMicrocontrollerIdFromName(microcontrollers_names[i]);
 
-                string sql4 = "EXECUTE AddMicrocontrollerToOrder " + order_id + ", " + microcontroller_id + ", " + microcontrollers_quantities[i].ToString(System.Globalization.CultureInfo.InvariantCulture) + ";";
-                result = GoQuery(sql4);
-                if (result != 1) return result;
+                    string sql4 = "EXECUTE AddMicrocontrollerToOrder " + order_id + ", " + microcontroller_id + ", " + microcontrollers_quantities[i].ToString(System.Globalization.CultureInfo.InvariantCulture) + ";";
+                    result = GoQuery(sql4);
+                    if (result != 1) return result;
+                }
             }
 
             return 1;
