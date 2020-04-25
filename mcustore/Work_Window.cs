@@ -31,7 +31,7 @@ namespace mcustore
             dataGridView2.ColumnCount = 3;
             dataGridView2.Columns[0].Name = "Модель микроконтроллера";
             dataGridView2.Columns[1].Name = "Количество";
-            dataGridView2.Columns[2].Name = "Цена за шт.";
+            dataGridView2.Columns[2].Name = "Цена за шт./$";
 
             dataGridView3.ColumnCount = 3;
             dataGridView3.Columns[0].Name = "Модель";
@@ -43,6 +43,9 @@ namespace mcustore
                 dataOrder = DataBaseClass.SelectOrdersData();
                 dataGridView1.Rows.Clear();
                 dataGridView2.Rows.Clear();
+                comboBox1.Items.Clear();
+                comboBox2.Items.Clear();
+                comboBox3.Items.Clear();
                 for (int i = 0;i<dataOrder.Count;i++)
                 {
                     dataGridView1.Rows.Add();
@@ -61,6 +64,8 @@ namespace mcustore
                          
                     }
                     comboBox1.Items.Add(dataOrder2[i][0]);
+                    comboBox2.Items.Add(dataOrder2[i][0]);
+                    comboBox3.Items.Add(dataOrder2[i][0]);
                 }
                 checkedListBox1.Items.Clear();
                 checkListBox();
@@ -106,8 +111,30 @@ namespace mcustore
             groupBox5.Location = new Point(2, tabControl1.Height / 3 + tabControl1.Height / 4 + 30);
             groupBox6.Location = new Point(groupBox3.Width + 6, tabControl1.Height / 3+ tabControl1.Height / 4 + 30);
             label4.Location = label1.Location;
-            //comboBox1.Location = new Point(textBox1.Location.X + label4.Width, textBox1.Location.Y);
-            comboBox1.Width = textBox1.Width - label4.Width;
+            label5.Location = new Point(checkedListBox1.Location.X, label2.Location.Y + label5.Height/2);
+            textBox2.Location = new Point(textBox1.Location.X + label4.Width, textBox1.Location.Y);
+            numericUpDown1.Location = new Point(textBox2.Location.X, label2.Location.Y);
+            comboBox1.Width =textBox2.Width = textBox1.Width - label4.Width;
+            button3.Width = textBox2.Width;
+            button3.Location = new Point(textBox2.Location.X, checkedListBox1.Location.Y);
+            label6.Location = new Point(checkedListBox1.Location.X, checkedListBox1.Location.Y+label6.Height);
+            textBox3.Width = label6.Width;
+            textBox3.Height = label6.Height;
+            textBox3.Location = new Point(button3.Location.X - textBox3.Width*2 + textBox3.Width/2, label6.Location.Y - label6.Height/3);
+            label8.Location = new Point(label5.Location.X,label4.Location.Y);
+            label7.Location = new Point(label6.Location.X, label5.Location.Y );
+            textBox4.Width = textBox3.Width;
+            numericUpDown2.Location = new Point(textBox3.Location.X, textBox2.Location.Y);
+            textBox4.Location = new Point(textBox3.Location.X, numericUpDown1.Location.Y);
+            button5.Width = button6.Width = button4.Width = comboBox1.Width;
+            button4.Location = new Point(comboBox1.Location.X, button3.Location.Y);
+            label9.Location = label1.Location;
+            label10.Location = label1.Location;
+            comboBox2.Width = comboBox3.Width = textBox2.Width;
+            comboBox2.Location = textBox2.Location;
+            comboBox3.Location = textBox2.Location;
+            button5.Location = new Point(comboBox1.Location.X, button3.Location.Y);
+            button6.Location = new Point(comboBox1.Location.X, button3.Location.Y);
         }
 
         private void checkListBox()
@@ -290,7 +317,6 @@ namespace mcustore
                     {
                         mass[i] = dataGrid3[i][1];
                         array[i] = Convert.ToInt32(dataGrid3[i][2]);
-                        MessageBox.Show(mass[i] + array[i]);
                     }
                 }
                 DataBaseClass.CreateNewOrder(textBox1.Text, mass.ToList(), array.ToList());
@@ -307,6 +333,66 @@ namespace mcustore
                 {
                     MessageBox.Show("Пустой заказ!", "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
+            }
+        }
+
+        private void Button3_Click(object sender, EventArgs e)
+        {
+            if(textBox2.Text!=""&&textBox3.Text!="")
+            {
+                DataBaseClass.CreateNewMicrocontroller(textBox2.Text, Convert.ToInt32(numericUpDown1.Value), Convert.ToDouble(textBox3.Text));
+                Work_Window_Load(sender, e);
+            }
+            else
+            {
+                MessageBox.Show("Не все данные указаны!", "Данные!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void TextBox3_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (Char.IsNumber(e.KeyChar) || e.KeyChar == 8 || e.KeyChar==',')
+            {
+                return;
+            }
+            e.Handled = true;
+        }
+
+        private void Button4_Click(object sender, EventArgs e)
+        {
+            if (comboBox1.Text != "" && textBox4.Text != "")
+            {
+                DataBaseClass.EditMicrocontroller(comboBox1.Text, comboBox1.Text, Convert.ToInt32(numericUpDown2.Value), Convert.ToDouble(textBox4.Text));
+                Work_Window_Load(sender, e);
+            }
+            else
+            {
+                MessageBox.Show("Не все данные указаны!", "Данные!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void Button5_Click(object sender, EventArgs e)
+        {
+            if (comboBox2.Text != "" )
+            {
+                DataBaseClass.SelectMicrocontrollersData(comboBox2.Text);
+            }
+            else
+            {
+                MessageBox.Show("Не все данные указаны!", "Данные!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void Button6_Click(object sender, EventArgs e)
+        {
+            if (comboBox3.Text != "")
+            {
+                DataBaseClass.DeleteMicrocontroller(comboBox3.Text);
+                Work_Window_Load(sender, e);
+            }
+            else
+            {
+                MessageBox.Show("Не все данные указаны!", "Данные!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }
