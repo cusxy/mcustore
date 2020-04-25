@@ -72,6 +72,7 @@
             this.button6 = new System.Windows.Forms.Button();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.comboBox3 = new System.Windows.Forms.ComboBox();
+            this.button7 = new System.Windows.Forms.Button();
             this.tabPage2.SuspendLayout();
             this.groupBox6.SuspendLayout();
             this.groupBox5.SuspendLayout();
@@ -211,6 +212,7 @@
             // groupBox4
             // 
             this.groupBox4.BackColor = System.Drawing.Color.White;
+            this.groupBox4.Controls.Add(this.button7);
             this.groupBox4.Controls.Add(this.comboBox2);
             this.groupBox4.Controls.Add(this.button5);
             this.groupBox4.Controls.Add(this.label9);
@@ -601,6 +603,16 @@
             this.comboBox3.Size = new System.Drawing.Size(121, 32);
             this.comboBox3.TabIndex = 14;
             // 
+            // button7
+            // 
+            this.button7.Location = new System.Drawing.Point(29, 115);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(204, 51);
+            this.button7.TabIndex = 14;
+            this.button7.Text = "Сброс";
+            this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.Button7_Click);
+            // 
             // Work_Window
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -613,6 +625,7 @@
             this.Name = "Work_Window";
             this.Text = "БД \"Заказ микроконтроллеров\"";
             this.Load += new System.EventHandler(this.Work_Window_Load);
+            this.Shown += new System.EventHandler(this.Work_Window_Shown);
             this.Resize += new System.EventHandler(this.Work_Window_Resize);
             this.tabPage2.ResumeLayout(false);
             this.groupBox6.ResumeLayout(false);
@@ -680,5 +693,6 @@
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.ComboBox comboBox3;
         private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.Button button7;
     }
 }
