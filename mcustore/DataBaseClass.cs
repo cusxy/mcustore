@@ -113,7 +113,7 @@ namespace mcustore
         /// <returns>Двумерный список данных для таблицы в порядке: Название микроконтроллера - Количество - Цена за штуку. Возвращает null в случае возникновения ошибки.</returns>
         public static List<List<string>> SelectMicrocontrollersData(string name_contains = "")
         {
-            string sql = "SELECT Microcontroller_name, Quantity, Price FROM Microcontrollers WHERE (Microcontroller_name LIKE N'%" + name_contains + "%');";
+            string sql = "SELECT * FROM dbo.GetMicrocontrollers(N'" + name_contains + "');";
             return ReadDataToMass(sql);
         }
 
