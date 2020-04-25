@@ -350,6 +350,8 @@ namespace mcustore
             {
                 DataBaseClass.CreateNewMicrocontroller(textBox2.Text, Convert.ToInt32(numericUpDown1.Value), Convert.ToDouble(textBox3.Text));
                 Work_Window_Load(sender, e);
+                textBox2.Clear();
+                textBox3.Clear();
             }
             else
             {
@@ -484,6 +486,26 @@ namespace mcustore
 
         private void Button9_Click(object sender, EventArgs e)
         {
+            string data1 = Convert.ToString(dateTimePicker1.Value.Year) + "-" + Convert.ToString(dateTimePicker1.Value.Month) + "-" + Convert.ToString(dateTimePicker1.Value.Day);
+            string data2 = Convert.ToString(dateTimePicker2.Value.Year) + "-" + Convert.ToString(dateTimePicker2.Value.Month) + "-" + Convert.ToString(dateTimePicker2.Value.Day);
+            
+            List<List<string>> dataOrder3;
+            dataGridView1.ColumnCount = 5;
+            dataGridView1.Columns[0].Name = "Номер заказа";
+            dataGridView1.Columns[1].Name = "Компания";
+            dataGridView1.Columns[2].Name = "Модели микроконтроллеров (шт.)";
+            dataGridView1.Columns[3].Name = "Цена ($)";
+            dataGridView1.Columns[4].Name = "Дата";
+            dataGridView1.Rows.Clear();
+            dataOrder3 = DataBaseClass.SelectOrdersData(data1,data2);
+            for (int i = 0; i < dataOrder3.Count; i++)
+            {
+                dataGridView1.Rows.Add();
+                for (int j = 0; j < dataOrder3[i].Count; j++)
+                {
+                    dataGridView1.Rows[i].Cells[j].Value = dataOrder3[i][j];
+                }
+            }
 
         }
 
@@ -494,6 +516,12 @@ namespace mcustore
             numericUpDown2.Value = Convert.ToDecimal(dataOrder3[0][1]);
             textBox4.Text = dataOrder3[0][2];
             dataOrder3.Clear();
+        }
+
+        private void Button8_Click(object sender, EventArgs e)
+        {
+            Work_Window_Load(sender, e);
+            dateTimePicker2.Value = DateTime.Now;
         }
     }
 }
