@@ -39,7 +39,6 @@ namespace mcustore
             dataGridView3.Columns[2].Name = "Цена ($)";
             if (DataBaseClass.IsConnect())
             {
-                MessageBox.Show("Соединение c БД установлено.", "Соединение!", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 dataOrder = DataBaseClass.SelectOrdersData();
                 dataGridView1.Rows.Clear();
                 dataGridView2.Rows.Clear();
@@ -134,6 +133,7 @@ namespace mcustore
             comboBox2.Location = textBox2.Location;
             comboBox3.Location = textBox2.Location;
             button5.Location = new Point(comboBox1.Location.X, button3.Location.Y);
+            button7.Location = new Point(checkedListBox1.Location.X, button3.Location.Y);
             button6.Location = new Point(comboBox1.Location.X, button3.Location.Y);
         }
 
@@ -375,7 +375,21 @@ namespace mcustore
         {
             if (comboBox2.Text != "" )
             {
-                DataBaseClass.SelectMicrocontrollersData(comboBox2.Text);
+                List<List<string>> dataOrder3;
+                dataGridView2.ColumnCount = 3;
+                dataGridView2.Columns[0].Name = "Модель микроконтроллера";
+                dataGridView2.Columns[1].Name = "Количество";
+                dataGridView2.Columns[2].Name = "Цена за шт./$";
+                dataGridView2.Rows.Clear();
+                dataOrder3 = DataBaseClass.SelectMicrocontrollersData(comboBox2.Text);
+                for (int i = 0; i < dataOrder3.Count; i++)
+                {
+                    dataGridView2.Rows.Add();
+                    for (int j = 0; j < dataOrder3[i].Count; j++)
+                    {
+                        dataGridView2.Rows[i].Cells[j].Value = dataOrder3[i][j];
+                    }
+                }
             }
             else
             {
@@ -393,6 +407,70 @@ namespace mcustore
             else
             {
                 MessageBox.Show("Не все данные указаны!", "Данные!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void Button7_Click(object sender, EventArgs e)
+        {
+            Work_Window_Load(sender, e);
+        }
+
+        private void Work_Window_Shown(object sender, EventArgs e)
+        {
+            Work_Window_Resize(sender, e);
+            dataGridView1.ColumnCount = 5;
+            dataGridView1.Columns[0].Name = "Номер заказа";
+            dataGridView1.Columns[1].Name = "Компания";
+            dataGridView1.Columns[2].Name = "Модели микроконтроллеров (шт.)";
+            dataGridView1.Columns[3].Name = "Цена ($)";
+            dataGridView1.Columns[4].Name = "Дата";
+
+            dataGridView2.ColumnCount = 3;
+            dataGridView2.Columns[0].Name = "Модель микроконтроллера";
+            dataGridView2.Columns[1].Name = "Количество";
+            dataGridView2.Columns[2].Name = "Цена за шт./$";
+
+            dataGridView3.ColumnCount = 3;
+            dataGridView3.Columns[0].Name = "Модель";
+            dataGridView3.Columns[1].Name = "Количество";
+            dataGridView3.Columns[2].Name = "Цена ($)";
+            if (DataBaseClass.IsConnect())
+            {
+                MessageBox.Show("Соединение c БД установлено.", "Соединение!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                dataOrder = DataBaseClass.SelectOrdersData();
+                dataGridView1.Rows.Clear();
+                dataGridView2.Rows.Clear();
+                comboBox1.Items.Clear();
+                comboBox2.Items.Clear();
+                comboBox3.Items.Clear();
+                for (int i = 0; i < dataOrder.Count; i++)
+                {
+                    dataGridView1.Rows.Add();
+                    for (int j = 0; j < dataOrder[i].Count; j++)
+                    {
+                        dataGridView1.Rows[i].Cells[j].Value = dataOrder[i][j];
+                    }
+                }
+                dataOrder2 = DataBaseClass.SelectMicrocontrollersData();
+                for (int i = 0; i < dataOrder2.Count; i++)
+                {
+                    dataGridView2.Rows.Add();
+                    for (int j = 0; j < dataOrder2[i].Count; j++)
+                    {
+                        dataGridView2.Rows[i].Cells[j].Value = dataOrder2[i][j];
+
+                    }
+                    comboBox1.Items.Add(dataOrder2[i][0]);
+                    comboBox2.Items.Add(dataOrder2[i][0]);
+                    comboBox3.Items.Add(dataOrder2[i][0]);
+                }
+                checkedListBox1.Items.Clear();
+                checkListBox();
+                dataGridFunction();
+            }
+            else
+            {
+                MessageBox.Show("Ошибка подключения к базе данных!", "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }
