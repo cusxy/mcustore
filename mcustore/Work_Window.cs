@@ -44,7 +44,6 @@ namespace mcustore
                 dataGridView2.Rows.Clear();
                 comboBox1.Items.Clear();
                 comboBox2.Items.Clear();
-                comboBox3.Items.Clear();
                 for (int i = 0;i<dataOrder.Count;i++)
                 {
                     dataGridView1.Rows.Add();
@@ -64,7 +63,6 @@ namespace mcustore
                     }
                     comboBox1.Items.Add(dataOrder2[i][0]);
                     comboBox2.Items.Add(dataOrder2[i][0]);
-                    comboBox3.Items.Add(dataOrder2[i][0]);
                 }
                 checkedListBox1.Items.Clear();
                 checkListBox();
@@ -103,12 +101,11 @@ namespace mcustore
             button1.Location = new Point(label1.Location.X, label3.Location.Y + heig_margin_tabpage1);
             button2.Location = new Point(button1.Location.X + groupBox1.Width - button2.Width - width_margin_tabpage1, label3.Location.Y + heig_margin_tabpage1);
 
-            groupBox3.Width = groupBox4.Width = groupBox5.Width = groupBox6.Width = tabControl1.Width / 2 - 16;
-            groupBox3.Height = groupBox4.Height = groupBox5.Height = groupBox6.Height = tabControl1.Height / 4;
+            groupBox3.Width = groupBox4.Width = groupBox5.Width = groupBox5.Width = tabControl1.Width / 2 - 16;
+            groupBox3.Height = groupBox4.Height = groupBox5.Height = groupBox5.Height = tabControl1.Height / 4;
             groupBox3.Location = new Point(2, tabControl1.Height / 3 + 15);
             groupBox4.Location = new Point(groupBox3.Width + 6, tabControl1.Height / 3 + 15);
             groupBox5.Location = new Point(2, tabControl1.Height / 3 + tabControl1.Height / 4 + 30);
-            groupBox6.Location = new Point(groupBox3.Width + 6, tabControl1.Height / 3+ tabControl1.Height / 4 + 30);
             label4.Location = label1.Location;
             label5.Location = new Point(checkedListBox1.Location.X, label2.Location.Y + label5.Height/2);
             textBox2.Location = new Point(textBox1.Location.X + label4.Width, textBox1.Location.Y);
@@ -125,16 +122,13 @@ namespace mcustore
             textBox4.Width = textBox3.Width;
             numericUpDown2.Location = new Point(textBox3.Location.X, textBox2.Location.Y);
             textBox4.Location = new Point(textBox3.Location.X, numericUpDown1.Location.Y);
-            button5.Width = button6.Width = button4.Width = comboBox1.Width;
+            button5.Width = button4.Width = comboBox1.Width;
             button4.Location = new Point(comboBox1.Location.X, button3.Location.Y);
             label9.Location = label1.Location;
-            label10.Location = label1.Location;
-            comboBox2.Width = comboBox3.Width = textBox2.Width;
+            comboBox2.Width  = textBox2.Width;
             comboBox2.Location = textBox2.Location;
-            comboBox3.Location = textBox2.Location;
             button5.Location = new Point(comboBox1.Location.X, button3.Location.Y);
             button7.Location = new Point(checkedListBox1.Location.X, button3.Location.Y);
-            button6.Location = new Point(comboBox1.Location.X, button3.Location.Y);
             label11.Location = label1.Location;
             label12.Location = checkedListBox1.Location;
             dateTimePicker1.Location = textBox1.Location;
@@ -407,19 +401,6 @@ namespace mcustore
             }
         }
 
-        private void Button6_Click(object sender, EventArgs e)
-        {
-            if (comboBox3.Text != "")
-            {
-                //DataBaseClass.DeleteMicrocontroller(comboBox3.Text);
-                Work_Window_Load(sender, e);
-            }
-            else
-            {
-                MessageBox.Show("Не все данные указаны!", "Данные!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
         private void Button7_Click(object sender, EventArgs e)
         {
             Work_Window_Load(sender, e);
@@ -452,7 +433,6 @@ namespace mcustore
                 dataGridView2.Rows.Clear();
                 comboBox1.Items.Clear();
                 comboBox2.Items.Clear();
-                comboBox3.Items.Clear();
                 for (int i = 0; i < dataOrder.Count; i++)
                 {
                     dataGridView1.Rows.Add();
@@ -472,7 +452,6 @@ namespace mcustore
                     }
                     comboBox1.Items.Add(dataOrder2[i][0]);
                     comboBox2.Items.Add(dataOrder2[i][0]);
-                    comboBox3.Items.Add(dataOrder2[i][0]);
                 }
                 checkedListBox1.Items.Clear();
                 checkListBox();
