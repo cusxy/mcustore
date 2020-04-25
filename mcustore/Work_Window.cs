@@ -20,6 +20,15 @@ namespace mcustore
         List<List<string>> dataOrder2;
         private void Work_Window_Load(object sender, EventArgs e)
         {
+            datagGridPush(sender, e);
+        }
+        /// <summary>
+        /// Функция заполнения dataGridView
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void datagGridPush(object sender, EventArgs e)
+        {
             Work_Window_Resize(sender, e);
             dataGridView1.ColumnCount = 5;
             dataGridView1.Columns[0].Name = "Номер заказа";
@@ -44,10 +53,10 @@ namespace mcustore
                 dataGridView2.Rows.Clear();
                 comboBox1.Items.Clear();
                 comboBox2.Items.Clear();
-                for (int i = 0;i<dataOrder.Count;i++)
+                for (int i = 0; i < dataOrder.Count; i++)
                 {
                     dataGridView1.Rows.Add();
-                    for (int j=0;j<dataOrder[i].Count;j++)
+                    for (int j = 0; j < dataOrder[i].Count; j++)
                     {
                         dataGridView1.Rows[i].Cells[j].Value = dataOrder[i][j];
                     }
@@ -58,8 +67,8 @@ namespace mcustore
                     dataGridView2.Rows.Add();
                     for (int j = 0; j < dataOrder2[i].Count; j++)
                     {
-                         dataGridView2.Rows[i].Cells[j].Value = dataOrder2[i][j];
-                         
+                        dataGridView2.Rows[i].Cells[j].Value = dataOrder2[i][j];
+
                     }
                     comboBox1.Items.Add(dataOrder2[i][0]);
                     comboBox2.Items.Add(dataOrder2[i][0]);
@@ -73,7 +82,6 @@ namespace mcustore
                 MessageBox.Show("Ошибка подключения к базе данных!", "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
         private void Work_Window_Resize(object sender, EventArgs e)
         {
             tabControl1.Width = this.Width;
