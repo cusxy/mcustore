@@ -21,24 +21,7 @@ namespace mcustore
         List<List<string>> ThreeMassData;//Третий массив - массив с данными для третьей таблицы.
         bool flag = false;//Переменная флаг, чтобы узнать первый ли раз открыта форма.
         /// <summary>
-        /// закгрузка формы
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Work_Window_Load(object sender, EventArgs e)
-        {
-            Work_Window_Resize(sender, e);
-            CheckingConnectionWithTheDatabaseANDFillingoutTwoArraysData();
-            FillingInTheHeadingsOfTableOne();
-            FillingInTheHeadingsOfTableTwo();
-            FillingInTheHeadingsOfTableThree();
-            FillingTheFirstTableWithData();
-            FillingTheSecondTableWithDataAndComboBoxOneAndTwo();
-            checkListBox();
-            FillingtheThirdArraywithData();
-        }
-        /// <summary>
-        /// 
+        /// Заполнение заголовков первой таблицы
         /// </summary>
         private void FillingInTheHeadingsOfTableOne()
         {
@@ -50,7 +33,7 @@ namespace mcustore
             dataGridView1.Columns[4].Name = "Дата";
         }
         /// <summary>
-        /// 
+        /// Заполнение заголовков второй таблицы
         /// </summary>
         private void FillingInTheHeadingsOfTableTwo()
         {
@@ -60,7 +43,7 @@ namespace mcustore
             dataGridView2.Columns[2].Name = "Цена за шт./$";
         }
         /// <summary>
-        /// 
+        /// Заполнение заголовков третьей таблицы
         /// </summary>
         private void FillingInTheHeadingsOfTableThree()
         {
@@ -70,7 +53,7 @@ namespace mcustore
             dataGridView3.Columns[2].Name = "Цена ($)";
         }
         /// <summary>
-        /// 
+        /// Проверка соединения с базой данных, при первом запуске формы выводится информация об успешном соединение или об ошибке соединения, при повторном обращение к функции, выдает информацию, только если ошибка соединения
         /// </summary>
         private void CheckingConnectionWithTheDatabaseANDFillingoutTwoArraysData()
         {
@@ -91,7 +74,7 @@ namespace mcustore
             }
         }
         /// <summary>
-        /// 
+        /// Заполнение первой таблицы данными из первого массива
         /// </summary>
         private void FillingTheFirstTableWithData()
         {
@@ -106,7 +89,7 @@ namespace mcustore
             }
         }
         /// <summary>
-        /// 
+        /// Заполнение второй таблицы данными из второго массива
         /// </summary>
         private void FillingTheSecondTableWithDataAndComboBoxOneAndTwo()
         {
@@ -125,9 +108,8 @@ namespace mcustore
                 comboBox2.Items.Add(TwoMassData[i][0]);
             }
         }
-
         /// <summary>
-        /// 
+        /// Заполнение третьей таблицы данными из третьего массива, в том случае если нулевое поле имеет значение true
         /// </summary>
         private void FillingTheThirdDataTable()
         {
@@ -145,76 +127,7 @@ namespace mcustore
             }
         }
         /// <summary>
-        /// изменение размеров формы
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Work_Window_Resize(object sender, EventArgs e)
-        {
-            tabControl1.Width = this.Width;
-            tabControl1.Height = this.Height;
-            dataGridView1.Width = dataGridView2.Width = tabControl1.Width - 20;
-            dataGridView1.Height = dataGridView2.Height = tabControl1.Height / 3;
-            groupBox1.Width = groupBox2.Width = tabControl1.Width / 2 - 16;
-            groupBox1.Height = groupBox2.Height = tabControl1.Height - tabControl1.Height/3 - 105;
-            groupBox1.Location = new Point(2, tabControl1.Height / 3 + 15);
-            groupBox2.Location = new Point(groupBox1.Width + 6, tabControl1.Height / 3 + 15);
-            int heig_margin_tabpage1 = groupBox1.Height/10;
-            int width_margin_tabpage1 = 8;
-            int width_padding_tabpage1 = 30;
-            textBox1.Width = groupBox1.Width - label1.Width - width_margin_tabpage1- width_padding_tabpage1*2;
-            label1.Location = new Point(dataGridView1.Location.X+ width_margin_tabpage1, dataGridView1.Location.Y + heig_margin_tabpage1);
-            label1.Location = new Point(dataGridView1.Location.X+ width_margin_tabpage1, dataGridView1.Location.Y + heig_margin_tabpage1);
-            textBox1.Location = new Point(dataGridView1.Location.X + width_padding_tabpage1*2 + label1.Width+width_margin_tabpage1, dataGridView1.Location.Y + heig_margin_tabpage1-textBox1.Height/3);
-            label2.Location = new Point(label1.Location.X, label1.Location.Y + heig_margin_tabpage1);
-            dataGridView3.Height = checkedListBox1.Height;
-            checkedListBox1.Width =groupBox1.Width / 3;
-            dataGridView3.Width = groupBox1.Width - checkedListBox1.Width  -width_margin_tabpage1 - width_padding_tabpage1 ;
-            checkedListBox1.Location = new Point(label1.Location.X, label2.Location.Y + heig_margin_tabpage1);
-            dataGridView3.Location = new Point(checkedListBox1.Location.X + width_padding_tabpage1  +  checkedListBox1.Width, checkedListBox1.Location.Y);
-            label3.Location = new Point(label1.Location.X, checkedListBox1.Location.Y + heig_margin_tabpage1 + checkedListBox1.Height);
-            button1.Location = new Point(label1.Location.X, label3.Location.Y + heig_margin_tabpage1);
-            button2.Location = new Point(button1.Location.X + groupBox1.Width - button2.Width - width_margin_tabpage1, label3.Location.Y + heig_margin_tabpage1);
-
-            groupBox3.Width = groupBox4.Width = groupBox5.Width = groupBox5.Width = tabControl1.Width / 2 - 16;
-            groupBox3.Height = groupBox4.Height = groupBox5.Height = groupBox5.Height = tabControl1.Height / 4;
-            groupBox3.Location = new Point(2, tabControl1.Height / 3 + 15);
-            groupBox4.Location = new Point(groupBox3.Width + 6, tabControl1.Height / 3 + 15);
-            groupBox5.Location = new Point(2, tabControl1.Height / 3 + tabControl1.Height / 4 + 30);
-            label4.Location = label1.Location;
-            label5.Location = new Point(checkedListBox1.Location.X, label2.Location.Y + label5.Height/2);
-            textBox2.Location = new Point(textBox1.Location.X + label4.Width, textBox1.Location.Y);
-            numericUpDown1.Location = new Point(textBox2.Location.X, label2.Location.Y);
-            comboBox1.Width =textBox2.Width = textBox1.Width - label4.Width;
-            button3.Width = textBox2.Width;
-            button3.Location = new Point(textBox2.Location.X, checkedListBox1.Location.Y);
-            label6.Location = new Point(checkedListBox1.Location.X, checkedListBox1.Location.Y+label6.Height);
-            textBox3.Width = label6.Width;
-            textBox3.Height = label6.Height;
-            textBox3.Location = new Point(button3.Location.X - textBox3.Width*2 + textBox3.Width/2, label6.Location.Y - label6.Height/3);
-            label8.Location = new Point(label5.Location.X,label4.Location.Y);
-            label7.Location = new Point(label6.Location.X, label5.Location.Y );
-            textBox4.Width = textBox3.Width;
-            numericUpDown2.Location = new Point(textBox3.Location.X, textBox2.Location.Y);
-            textBox4.Location = new Point(textBox3.Location.X, numericUpDown1.Location.Y);
-            button5.Width = button4.Width = comboBox1.Width;
-            button4.Location = new Point(comboBox1.Location.X, button3.Location.Y);
-            label9.Location = label1.Location;
-            comboBox2.Width  = textBox2.Width;
-            comboBox2.Location = textBox2.Location;
-            button5.Location = new Point(comboBox1.Location.X, button3.Location.Y);
-            button7.Location = new Point(checkedListBox1.Location.X, button3.Location.Y);
-            label11.Location = label1.Location;
-            label12.Location = checkedListBox1.Location;
-            dateTimePicker1.Location = textBox1.Location;
-            dateTimePicker2.Location = new Point(textBox1.Location.X, dataGridView3.Location.Y);
-            dateTimePicker1.Width = dateTimePicker2.Width = textBox1.Width;
-            button9.Width = button8.Width = button1.Width;
-            button8.Location = button1.Location;
-            button9.Location = button2.Location;
-        }
-        /// <summary>
-        /// заполнение checkListBox1 данными из массива
+        /// Заполнение checkListBox1 данными из массива
         /// </summary>
         private void checkListBox()
         {
@@ -225,7 +138,7 @@ namespace mcustore
             }
         }
         /// <summary>
-        /// заполнение данными из массива третьей таблицы
+        /// Заполнение данными из массива третьей таблицы
         /// </summary>
         private void FillingtheThirdArraywithData()
         {
@@ -240,7 +153,7 @@ namespace mcustore
             }
         }
         /// <summary>
-        /// поиск выделенных элементов в checkListBox
+        /// Поиск выделенных элементов в checkListBox и перезапись(редактирование) элементов третьего массива
         /// </summary>
         private void SearchForFeaturedItems()
         {
@@ -258,15 +171,8 @@ namespace mcustore
                 }
             }
         }
-        
-        private void CheckedListBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            SearchForFeaturedItems();
-            FillingTheThirdDataTable();
-            CountingTotalOrderCosts();
-        }
         /// <summary>
-        /// подсчет общей стоимости заказа
+        /// Подсчет общей стоимости заказа и вывод ее на экран
         /// </summary>
         private void CountingTotalOrderCosts()
         {
@@ -278,7 +184,7 @@ namespace mcustore
             label3.Text = "Стоимость заказа " + price + "$";
         }
         /// <summary>
-        /// 
+        /// Проверка какое значение пользователь поменял в третьей таблице и соответсвующие действия программы
         /// </summary>
         /// <param name="IndexColumn"></param>
         /// <param name="IndexRow"></param>
@@ -373,25 +279,8 @@ namespace mcustore
                 }
             }
         }
-        private void DataGridView3_CellValueChanged(object sender, DataGridViewCellEventArgs e)
-        {
-            TrackingChangesintheThirdTableAndcataChange(e.ColumnIndex, e.RowIndex);
-        }
         /// <summary>
-        /// обработка кликов по разным кнопкам на форме
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Button1_Click(object sender, EventArgs e)
-        {
-            textBox1.Text = "";
-            label3.Text = "";
-            dataGridView3.Rows.Clear();
-            ThreeMassData.Clear();
-            Work_Window_Load(sender, e);
-        }
-        /// <summary>
-        /// 
+        /// Создание массивов для запроса на создание нового и заказа, и выполнение запроса
         /// </summary>
         private void RequestFulfillmentCreateNewOrder()
         {
@@ -406,6 +295,19 @@ namespace mcustore
                 }
             }
             DataBaseClass.CreateNewOrder(textBox1.Text, mass.ToList(), array.ToList());
+        }
+
+        private void DataGridView3_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            TrackingChangesintheThirdTableAndcataChange(e.ColumnIndex, e.RowIndex);
+        }
+        private void Button1_Click(object sender, EventArgs e)
+        {
+            textBox1.Text = "";
+            label3.Text = "";
+            dataGridView3.Rows.Clear();
+            ThreeMassData.Clear();
+            Work_Window_Load(sender, e);
         }
         private void Button2_Click(object sender, EventArgs e)
         {
@@ -501,6 +403,103 @@ namespace mcustore
             numericUpDown2.Value = Convert.ToDecimal(MassTemp[0][1]);
             textBox4.Text = MassTemp[0][2];
             MassTemp.Clear();
+        }
+        /// <summary>
+        /// ИЗменение флагов у элементов checkListBox1 и отправляет данные на перезапись или редактирование
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CheckedListBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            SearchForFeaturedItems();
+            FillingTheThirdDataTable();
+            CountingTotalOrderCosts();
+        }
+        /// <summary>
+        /// Изменение размеров формы, интерактивное изменение размеров интерфейса
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Work_Window_Resize(object sender, EventArgs e)
+        {
+            tabControl1.Width = this.Width;
+            tabControl1.Height = this.Height;
+            dataGridView1.Width = dataGridView2.Width = tabControl1.Width - 20;
+            dataGridView1.Height = dataGridView2.Height = tabControl1.Height / 3;
+            groupBox1.Width = groupBox2.Width = tabControl1.Width / 2 - 16;
+            groupBox1.Height = groupBox2.Height = tabControl1.Height - tabControl1.Height / 3 - 105;
+            groupBox1.Location = new Point(2, tabControl1.Height / 3 + 15);
+            groupBox2.Location = new Point(groupBox1.Width + 6, tabControl1.Height / 3 + 15);
+            int heig_margin_tabpage1 = groupBox1.Height / 10;
+            int width_margin_tabpage1 = 8;
+            int width_padding_tabpage1 = 30;
+            textBox1.Width = groupBox1.Width - label1.Width - width_margin_tabpage1 - width_padding_tabpage1 * 2;
+            label1.Location = new Point(dataGridView1.Location.X + width_margin_tabpage1, dataGridView1.Location.Y + heig_margin_tabpage1);
+            label1.Location = new Point(dataGridView1.Location.X + width_margin_tabpage1, dataGridView1.Location.Y + heig_margin_tabpage1);
+            textBox1.Location = new Point(dataGridView1.Location.X + width_padding_tabpage1 * 2 + label1.Width + width_margin_tabpage1, dataGridView1.Location.Y + heig_margin_tabpage1 - textBox1.Height / 3);
+            label2.Location = new Point(label1.Location.X, label1.Location.Y + heig_margin_tabpage1);
+            dataGridView3.Height = checkedListBox1.Height;
+            checkedListBox1.Width = groupBox1.Width / 3;
+            dataGridView3.Width = groupBox1.Width - checkedListBox1.Width - width_margin_tabpage1 - width_padding_tabpage1;
+            checkedListBox1.Location = new Point(label1.Location.X, label2.Location.Y + heig_margin_tabpage1);
+            dataGridView3.Location = new Point(checkedListBox1.Location.X + width_padding_tabpage1 + checkedListBox1.Width, checkedListBox1.Location.Y);
+            label3.Location = new Point(label1.Location.X, checkedListBox1.Location.Y + heig_margin_tabpage1 + checkedListBox1.Height);
+            button1.Location = new Point(label1.Location.X, label3.Location.Y + heig_margin_tabpage1);
+            button2.Location = new Point(button1.Location.X + groupBox1.Width - button2.Width - width_margin_tabpage1, label3.Location.Y + heig_margin_tabpage1);
+
+            groupBox3.Width = groupBox4.Width = groupBox5.Width = groupBox5.Width = tabControl1.Width / 2 - 16;
+            groupBox3.Height = groupBox4.Height = groupBox5.Height = groupBox5.Height = tabControl1.Height / 4;
+            groupBox3.Location = new Point(2, tabControl1.Height / 3 + 15);
+            groupBox4.Location = new Point(groupBox3.Width + 6, tabControl1.Height / 3 + 15);
+            groupBox5.Location = new Point(2, tabControl1.Height / 3 + tabControl1.Height / 4 + 30);
+            label4.Location = label1.Location;
+            label5.Location = new Point(checkedListBox1.Location.X, label2.Location.Y + label5.Height / 2);
+            textBox2.Location = new Point(textBox1.Location.X + label4.Width, textBox1.Location.Y);
+            numericUpDown1.Location = new Point(textBox2.Location.X, label2.Location.Y);
+            comboBox1.Width = textBox2.Width = textBox1.Width - label4.Width;
+            button3.Width = textBox2.Width;
+            button3.Location = new Point(textBox2.Location.X, checkedListBox1.Location.Y);
+            label6.Location = new Point(checkedListBox1.Location.X, checkedListBox1.Location.Y + label6.Height);
+            textBox3.Width = label6.Width;
+            textBox3.Height = label6.Height;
+            textBox3.Location = new Point(button3.Location.X - textBox3.Width * 2 + textBox3.Width / 2, label6.Location.Y - label6.Height / 3);
+            label8.Location = new Point(label5.Location.X, label4.Location.Y);
+            label7.Location = new Point(label6.Location.X, label5.Location.Y);
+            textBox4.Width = textBox3.Width;
+            numericUpDown2.Location = new Point(textBox3.Location.X, textBox2.Location.Y);
+            textBox4.Location = new Point(textBox3.Location.X, numericUpDown1.Location.Y);
+            button5.Width = button4.Width = comboBox1.Width;
+            button4.Location = new Point(comboBox1.Location.X, button3.Location.Y);
+            label9.Location = label1.Location;
+            comboBox2.Width = textBox2.Width;
+            comboBox2.Location = textBox2.Location;
+            button5.Location = new Point(comboBox1.Location.X, button3.Location.Y);
+            button7.Location = new Point(checkedListBox1.Location.X, button3.Location.Y);
+            label11.Location = label1.Location;
+            label12.Location = checkedListBox1.Location;
+            dateTimePicker1.Location = textBox1.Location;
+            dateTimePicker2.Location = new Point(textBox1.Location.X, dataGridView3.Location.Y);
+            dateTimePicker1.Width = dateTimePicker2.Width = textBox1.Width;
+            button9.Width = button8.Width = button1.Width;
+            button8.Location = button1.Location;
+            button9.Location = button2.Location;
+        }
+        /// <summary>
+        /// Закгрузка формы
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Work_Window_Load(object sender, EventArgs e)
+        {
+            Work_Window_Resize(sender, e);
+            CheckingConnectionWithTheDatabaseANDFillingoutTwoArraysData();
+            FillingInTheHeadingsOfTableOne();
+            FillingInTheHeadingsOfTableTwo();
+            FillingInTheHeadingsOfTableThree();
+            FillingTheFirstTableWithData();
+            FillingTheSecondTableWithDataAndComboBoxOneAndTwo();
+            checkListBox();
+            FillingtheThirdArraywithData();
         }
     }
 }
