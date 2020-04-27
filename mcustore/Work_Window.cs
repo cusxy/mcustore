@@ -333,10 +333,17 @@ namespace mcustore
         {
             if(textBox2.Text!=""&&textBox3.Text!="")
             {
-                DataBaseClass.CreateNewMicrocontroller(textBox2.Text, Convert.ToInt32(numericUpDown1.Value), Convert.ToDouble(textBox3.Text));
-                Work_Window_Load(sender, e);
+                if(DataBaseClass.CreateNewMicrocontroller(textBox2.Text, Convert.ToInt32(numericUpDown1.Value), Convert.ToDouble(textBox3.Text))==1)
+                {
+                    Work_Window_Load(sender, e);
+                }
+                else
+                {
+                    MessageBox.Show("Такой микроконтроллер уже есть, его нельзя добавить!");
+                }
                 textBox2.Clear();
                 textBox3.Clear();
+                numericUpDown1.Value = 1;
             }
             else
             {
@@ -349,6 +356,8 @@ namespace mcustore
             {
                 DataBaseClass.EditMicrocontroller(comboBox1.Text, comboBox1.Text, Convert.ToInt32(numericUpDown2.Value), Convert.ToDouble(textBox4.Text));
                 Work_Window_Load(sender, e);
+                textBox4.Clear();
+                numericUpDown2.Value = 1;
             }
             else
             {
