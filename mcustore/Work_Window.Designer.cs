@@ -229,7 +229,6 @@
             // 
             // comboBox2
             // 
-            this.comboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox2.FormattingEnabled = true;
             this.comboBox2.Location = new System.Drawing.Point(432, 44);
             this.comboBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
