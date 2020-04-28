@@ -16,7 +16,7 @@ namespace mcustore
         {
             InitializeComponent();
         }
-
+        bool login = false;
         /// <summary>
         /// Определяет позиции кнопок и других элементов формы
         /// </summary>
@@ -67,12 +67,22 @@ namespace mcustore
             t.BackColor = Color.FromArgb(0, 0, 128);
             t.ForeColor = Color.FromArgb(255, 255, 255);
         }
+        /// <summary>
+        /// Установка размера формы
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Login_Load(object sender, EventArgs e)
         {
             this.Width = 1200;
             this.Height = 600;
             LocationElement();
         }
+        /// <summary>
+        /// Выполняет проверку кода активации
+        /// </summary>
+        /// <param name="pas"></param>
+        /// <returns></returns>
         private bool ActivationCodeCheck(string pas)
         {
             if (DataBaseClass.GetMD5FromString(pas) == "b12be09df7b5175ca791f3bcad45f513")
@@ -84,6 +94,10 @@ namespace mcustore
                 return false;
             }
         }
+        /// <summary>
+        /// Отправляет запрос на создание учетной записи
+        /// </summary>
+        /// <returns></returns>
         private bool CreateAccountRequestRequest()
         {
             if (textBox1.Text != "" && textBox2.Text != "" && textBox3.Text != "" && textBox4.Text != "")
@@ -111,6 +125,10 @@ namespace mcustore
                 return false;
             }
         }
+        /// <summary>
+        /// Отправляет запрос на проверку логина и пароля
+        /// </summary>
+        /// <returns></returns>
         private bool AccountLogin()
         {
             if(textBox1.Text!="" && textBox2.Text!="")
@@ -162,7 +180,9 @@ namespace mcustore
                     this.Close();
                 }            }
         }
-        bool login = false;
+        /// <summary>
+        /// Меняет названия кнопок и отображение полей, в завимости вход это или регистрация
+        /// </summary>
         private void Checkingtheloginformmode()
         {
             if(login)
