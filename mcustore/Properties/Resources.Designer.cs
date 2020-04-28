@@ -63,6 +63,16 @@ namespace mcustore.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap fon {
+            get {
+                object obj = ResourceManager.GetObject("fon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap fon_vxod {
             get {
                 object obj = ResourceManager.GetObject("fon_vxod", resourceCulture);
