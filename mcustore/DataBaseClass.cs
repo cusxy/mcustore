@@ -243,7 +243,7 @@ namespace mcustore
             }
         }
 
-       /* /// <summary>Вызов SQL-функции, возвращающей значение типа string</summary>
+        /// <summary>Вызов SQL-функции, возвращающей значение типа string</summary>
         /// <param name="query">Запрос с вызовом функции</param>
         /// <returns>Возвращаемое значение функции</returns>
         private static string GetScalarStringVariableFromSQLFunction(string query)
@@ -265,7 +265,7 @@ namespace mcustore
                 sqlConnection.Close(); // закрываем соединение с БД
                 return "";
             }
-        }*/
+        }
 
         /// <summary>Возвращает строчку, зашифрованную через MD5</summary>
         /// <param name="text">Исходная строчка</param>
@@ -283,24 +283,41 @@ namespace mcustore
             return result;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="login"></param>
-        /// <returns></returns>
+        /// <summary>Возвращает ID менеджера по его логину</summary>
+        /// <param name="login">Логин менеджера</param>
+        /// <returns>ID менеджера в БД (-1 в случае, если логин не найден)</returns>
         private static int GetManagerIdByLogin(string login)
         {
             string sql = "SELECT * FROM dbo.GetManagerIdByLogin(N'" + login + "');";
             return GetScalarIntVariableFromSQLFunction(sql);
         }
 
+        /// <summary>Добавляет нового менеджера</summary>
+        /// <param name="login">Логин менеджера</param>
+        /// <param name="name">Имяменеджера </param>
+        /// <param name="password">Пароль (незашифрованный) менеджера</param>
+        /// <returns>1 - если запись успешно добавлена, 0 - если логин уже существует, -1 - в случае ошибки</returns>
         public static int AddNewManager(string login, string name, string password) {
             if (GetManagerIdByLogin(login) == -1) // логин не найден, продолжаем регистрацию
             {
-                string sql = "";
-                return 1;
+                string sql = "EXECUTE dbo.AddNewManager(N'" + name + "', N'" + login + "', N'" + GetMD5FromString(password) + "')";
+                return GoQuery(sql);
             }
-            else return -1; // логин найден, регистрация невозможна
+            else return 0; // логин найден, регистрация невозможна
+        }
+
+        /// <summary>Проверка пароля менеджера по логину</summary>
+        /// <param name="login">Логин менеджера</param>
+        /// <param name="password">Пароль (незашифрованный) менеджера</param>
+        /// <returns>1 - если пароль верен, 0 - если неверен, -1 - в случае ошибки</returns>
+        public static int CheckPassword(string login, string password) {
+            if (GetManagerIdByLogin(login) != -1) // если логин найден в БД
+            {
+                string sql = "SELECT * FROM dbo.GetManagerPasswordMD5ByLogin(N'" + login + "');";
+                string password_md5_in_base = GetScalarStringVariableFromSQLFunction(sql);
+                string password_md5 = GetMD5FromString(password);
+            }
+            return -1;
         }
     }
 }
