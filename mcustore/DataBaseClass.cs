@@ -191,9 +191,9 @@ namespace mcustore
         /// <param name="microcontrollers_names">Одномерный список названий заказываемых микроконтроллеров</param>
         /// <param name="microcontrollers_quantities">Одномерный список соответствующего количества заказываемых микроконтроллеров</param>
         /// <returns>1 - в случае успешного создания, 0 - в случае, если запрос отклонён БД, -1 - в случае ошибки</returns>
-        public static int CreateNewOrder(string company_name, List<string> microcontrollers_names, List<int> microcontrollers_quantities)
+        public static int CreateNewOrder(string company_name, List<string> microcontrollers_names, List<int> microcontrollers_quantities, string manager_login)
         {
-            string sql = "EXECUTE AddNewOrder '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "', N'" + company_name + "';"; // выполнение хранимой процедуры AddNewOrder
+            string sql = "EXECUTE AddNewOrder '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "', N'" + company_name + "', " + manager_login + ";"; // выполнение хранимой процедуры AddNewOrder
             int result = GoQuery(sql);
             if (result != 1) return result; // если возникла ошибка, либо запрос был отклонён БД
 
