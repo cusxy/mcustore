@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace mcustore
 {
     /// <summary>Класс для работы с БД</summary>
     abstract public class DataBaseClass
-    {        
+    {
         /// <summary>Строчка подключения к БД</summary>
         private static readonly string m_connection_string = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\mcustoredatabase.mdf;Integrated Security=True";
 
@@ -83,7 +85,7 @@ namespace mcustore
             for (int i = 0; i < orders_list.Count; i++) // для каждого заказа
             {
                 double all_price = 0;
-                result.Add(new List<string>()); 
+                result.Add(new List<string>());
                 result[i].Add(orders_list[i][0]); // id заказа 
                 result[i].Add(orders_list[i][1]); // название компании
                 string microcontrollers_info = "";
@@ -215,6 +217,90 @@ namespace mcustore
             }
 
             return 1;
+        }
+
+        /// <summary>Вызов SQL-функции, возвращающей значение типа int</summary>
+        /// <param name="query">Запрос с вызовом функции</param>
+        /// <returns>Возвращаемое значение функции</returns>
+        private static int GetScalarIntVariableFromSQLFunction(string query)
+        {
+            SqlConnection sqlConnection = new SqlConnection(m_connection_string); // инициализируем соединение с БД
+            try
+            {
+                sqlConnection.Open(); // открываем соединение с БД
+
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection); // создание SQL команды с указанным запросом
+
+                SqlCommand cmd = new SqlCommand(query, sqlConnection);
+                int variable = (int)cmd.ExecuteScalar();
+                sqlConnection.Close(); // закрываем соединение с БД
+                return variable;
+            }
+            catch
+            {
+                sqlConnection.Close(); // закрываем соединение с БД
+                return -1;
+            }
+        }
+
+       /* /// <summary>Вызов SQL-функции, возвращающей значение типа string</summary>
+        /// <param name="query">Запрос с вызовом функции</param>
+        /// <returns>Возвращаемое значение функции</returns>
+        private static string GetScalarStringVariableFromSQLFunction(string query)
+        {
+            SqlConnection sqlConnection = new SqlConnection(m_connection_string); // инициализируем соединение с БД
+            try
+            {
+                sqlConnection.Open(); // открываем соединение с БД
+
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection); // создание SQL команды с указанным запросом
+
+                SqlCommand cmd = new SqlCommand(query, sqlConnection);
+                string variable = (string)cmd.ExecuteScalar();
+                sqlConnection.Close(); // закрываем соединение с БД
+                return variable;
+            }
+            catch
+            {
+                sqlConnection.Close(); // закрываем соединение с БД
+                return "";
+            }
+        }*/
+
+        /// <summary>Возвращает строчку, зашифрованную через MD5</summary>
+        /// <param name="text">Исходная строчка</param>
+        /// <returns>Зашифрованная строчка (всегда 32 символа)</returns>
+        public static string GetMD5FromString(string text)
+        {
+            MD5 md5Hash = MD5.Create();
+            byte[] data = md5Hash.ComputeHash(Encoding.UTF8.GetBytes(text));
+            StringBuilder sBuilder = new StringBuilder();
+            for (int i = 0; i < data.Length; i++)
+            {
+                sBuilder.Append(data[i].ToString("x2"));
+            }
+            string result = sBuilder.ToString(); // зашифрованная строчка при помощи MD5
+            return result;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="login"></param>
+        /// <returns></returns>
+        private static int GetManagerIdByLogin(string login)
+        {
+            string sql = "SELECT * FROM dbo.GetManagerIdByLogin(N'" + login + "');";
+            return GetScalarIntVariableFromSQLFunction(sql);
+        }
+
+        public static int AddNewManager(string login, string name, string password) {
+            if (GetManagerIdByLogin(login) == -1) // логин не найден, продолжаем регистрацию
+            {
+                string sql = "";
+                return 1;
+            }
+            else return -1; // логин найден, регистрация невозможна
         }
     }
 }
