@@ -86,38 +86,81 @@ namespace mcustore
         }
         private bool CreateAccountRequestRequest()
         {
-            string user_name = textBox3.Text;
-            string loginname = textBox1.Text;
-            string password = textBox2.Text;
-            if(DataBaseClass.AddNewManager(loginname, user_name, password)==1 && ActivationCodeCheck(textBox4.Text))
+            if (textBox1.Text != "" && textBox2.Text != "" && textBox3.Text != "" && textBox4.Text != "")
             {
-                MessageBox.Show("Регистрация успешна!", "Регистрация", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return true;
+                string user_name = textBox3.Text;
+                string loginname = textBox1.Text;
+                string password = textBox2.Text;
+                if (DataBaseClass.AddNewManager(loginname, user_name, password) == 1 && ActivationCodeCheck(textBox4.Text))
+                {
+                    MessageBox.Show("Регистрация успешна!", "Регистрация", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return true;
+                }
+                else
+                {
+                    MessageBox.Show("Придумайте новый логин, такой уже есть!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    textBox1.Clear();
+                    textBox2.Clear();
+                    textBox4.Clear();
+                    return false;
+                }
             }
             else
             {
-                MessageBox.Show("Придумайте новый логин, такой уже есть!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                textBox1.Clear();
-                textBox2.Clear();
-                textBox4.Clear();
+                MessageBox.Show("Не все поля заполнены!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+        }
+        private bool AccountLogin()
+        {
+            if(textBox1.Text!="" && textBox2.Text!="")
+            {
+                string loginname = textBox1.Text;
+                string password = textBox2.Text;
+                if (DataBaseClass.CheckPassword(loginname, password) == 1)
+                {
+                    MessageBox.Show("Вход выполнен!", "Вход", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return true;
+                }
+                else
+                {
+                    MessageBox.Show("Неверный пароль или логин!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    textBox1.Clear();
+                    textBox2.Clear();
+                    return false;
+                }
+            }
+            else
+            {
+                MessageBox.Show("Не все поля заполнены!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
                 return false;
             }
         }
         private void Button2_Click(object sender, EventArgs e)
         {
             
-            if(CreateAccountRequestRequest())
+            if(login)
             {
-                Work_Window form = new Work_Window();
-                form.Owner = this;
-                this.Hide();
-                form.ShowDialog();
-                this.Close();
+                if(CreateAccountRequestRequest())
+                {
+                    Work_Window form = new Work_Window();
+                    form.Owner = this;
+                    this.Hide();
+                    form.ShowDialog();
+                    this.Close();
+                }
             }
             else
             {
-                
-            }
+                if (AccountLogin())
+                {
+                    Work_Window form = new Work_Window();
+                    form.Owner = this;
+                    this.Hide();
+                    form.ShowDialog();
+                    this.Close();
+                }            }
         }
         bool login = false;
         private void Checkingtheloginformmode()
@@ -144,10 +187,16 @@ namespace mcustore
             if(button1.Text =="Отмена")
             {
                 login = false;
+                textBox1.Clear();
+                textBox2.Clear();
+                textBox4.Clear();
+                textBox3.Clear();
             }
             else
             {
                 login = true;
+                textBox1.Clear();
+                textBox2.Clear();
             }
             Checkingtheloginformmode();
         }
