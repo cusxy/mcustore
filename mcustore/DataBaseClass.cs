@@ -297,27 +297,29 @@ namespace mcustore
         /// <param name="name">Имяменеджера </param>
         /// <param name="password">Пароль (незашифрованный) менеджера</param>
         /// <returns>1 - если запись успешно добавлена, 0 - если логин уже существует, -1 - в случае ошибки</returns>
-        public static int AddNewManager(string login, string name, string password) {
-            if (GetManagerIdByLogin(login) == -1) // логин не найден, продолжаем регистрацию
-            {
-                string sql = "EXECUTE dbo.AddNewManager(N'" + name + "', N'" + login + "', N'" + GetMD5FromString(password) + "')";
-                return GoQuery(sql);
-            }
-            else return 0; // логин найден, регистрация невозможна
+        public static int AddNewManager(string login, string name, string password)
+        {
+            string sql = "EXECUTE dbo.AddNewManager(N'" + name + "', N'" + login + "', N'" + GetMD5FromString(password) + "');";
+            return GoQuery(sql);
         }
 
         /// <summary>Проверка пароля менеджера по логину</summary>
         /// <param name="login">Логин менеджера</param>
         /// <param name="password">Пароль (незашифрованный) менеджера</param>
         /// <returns>1 - если пароль верен, 0 - если неверен, -1 - в случае ошибки</returns>
-        public static int CheckPassword(string login, string password) {
-            if (GetManagerIdByLogin(login) != -1) // если логин найден в БД
-            {
-                string sql = "SELECT * FROM dbo.GetManagerPasswordMD5ByLogin(N'" + login + "');";
-                string password_md5_in_base = GetScalarStringVariableFromSQLFunction(sql);
-                string password_md5 = GetMD5FromString(password);
-            }
-            return -1;
+        public static int CheckPassword(string login, string password)
+        {
+            // поиск записи в бд
+            string sql = "SELECT * FROM dbo.GetManagerIdByLogin(N'" + login + "');";
+            int result = GoQuery(sql);
+            if (result != 1) return result; // если запись не найдена или возникла ошибка
+
+            // если запись найдена
+            string sql2 = "SELECT * FROM dbo.GetManagerPasswordMD5ByLogin(N'" + login + "');";
+            string password_md5_in_base = GetScalarStringVariableFromSQLFunction(sql2);
+            string password_md5 = GetMD5FromString(password);
+            if (password_md5_in_base == password_md5) return 1;
+            else return 0;
         }
     }
 }
