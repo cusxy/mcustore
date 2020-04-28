@@ -294,7 +294,7 @@ namespace mcustore
                     array[i] = Convert.ToInt32(ThreeMassData[i][2]);
                 }
             }
-            DataBaseClass.CreateNewOrder(textBox1.Text, mass.ToList(), array.ToList());
+            DataBaseClass.CreateNewOrder(textBox1.Text, mass.ToList(), array.ToList(),"Herobrin");
         }
 
         private void DataGridView3_CellValueChanged(object sender, DataGridViewCellEventArgs e)

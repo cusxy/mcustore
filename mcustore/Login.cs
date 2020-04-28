@@ -73,9 +73,40 @@ namespace mcustore
             this.Height = 600;
             LocationElement();
         }
+        private bool ActivationCodeCheck(string pas)
+        {
+            if (DataBaseClass.GetMD5FromString(pas) == "b12be09df7b5175ca791f3bcad45f513")
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        private bool CreateAccountRequestRequest()
+        {
+            string user_name = textBox3.Text;
+            string loginname = textBox1.Text;
+            string password = textBox2.Text;
+            if(DataBaseClass.AddNewManager(loginname, user_name, password)==1 && ActivationCodeCheck(textBox4.Text))
+            {
+                MessageBox.Show("Регистрация успешна!", "Регистрация", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return true;
+            }
+            else
+            {
+                MessageBox.Show("Придумайте новый логин, такой уже есть!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                textBox1.Clear();
+                textBox2.Clear();
+                textBox4.Clear();
+                return false;
+            }
+        }
         private void Button2_Click(object sender, EventArgs e)
         {
-            if (textBox2.Text == "123456789")
+            
+            if(CreateAccountRequestRequest())
             {
                 Work_Window form = new Work_Window();
                 form.Owner = this;
@@ -85,7 +116,7 @@ namespace mcustore
             }
             else
             {
-                MessageBox.Show("Неверный пароль!", "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                
             }
         }
         bool login = false;
