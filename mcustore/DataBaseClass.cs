@@ -206,7 +206,8 @@ namespace mcustore
             if (info.Count == 0) return 0; // в случае отсутствия такого микроконтроллера
             int order_id = Convert.ToInt32(info[info.Count - 1][0]);
 
-            for (int i = 0; i < microcontrollers_names.Count; i++) {
+            for (int i = 0; i < microcontrollers_names.Count; i++)
+            {
                 if (microcontrollers_names[i] != null)
                 {
                     int microcontroller_id = GetMicrocontrollerIdFromName(microcontrollers_names[i]);
